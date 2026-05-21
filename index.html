@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Atomicsoft | Next-Gen Digital Solutions</title>
+        <style>
+            :root {
+                --bg-color: #0a0a0f;
+                --panel-bg: rgba(20, 20, 35, 0.7);
+                --accent-glow: #00ffcc;
+                --accent-purple: #7000ff;
+                --text-main: #ffffff;
+                --text-muted: #8b8ba7;
+            }
+
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+                font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            }
+
+            body {
+                background-color: var(--bg-color);
+                color: var(--text-main);
+                overflow-x: hidden;
+                background-image:
+                    radial-gradient(
+                        circle at 10% 20%,
+                        rgba(0, 255, 204, 0.05) 0%,
+                        transparent 40%
+                    ),
+                    radial-gradient(
+                        circle at 90% 80%,
+                        rgba(112, 0, 255, 0.08) 0%,
+                        transparent 50%
+                    );
+                background-attachment: fixed;
+            }
+
+            /* Header / Nav */
+            header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 30px 10%;
+                position: fixed;
+                width: 100%;
+                top: 0;
+                z-index: 100;
+                backdrop-filter: blur(12px);
+                background: rgba(10, 10, 15, 0.6);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            }
+
+            .logo {
+                font-size: 1.5rem;
+                font-weight: 800;
+                letter-spacing: 2px;
+                background: linear-gradient(
+                    45deg,
+                    var(--accent-glow),
+                    var(--accent-purple)
+                );
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                text-transform: uppercase;
+            }
+
+            nav a {
+                color: var(--text-muted);
+                text-decoration: none;
+                margin-left: 30px;
+                font-weight: 500;
+                transition: color 0.3s;
+            }
+
+            nav a:hover {
+                color: var(--accent-glow);
+            }
+
+            /* Hero Section */
+            .hero {
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 0 15%;
+                padding-top: 100px;
+            }
+
+            .hero h1 {
+                font-size: 4.5rem;
+                font-weight: 900;
+                line-height: 1.1;
+                margin-bottom: 20px;
+                letter-spacing: -1px;
+            }
+
+            .hero h1 span {
+                background: linear-gradient(
+                    135deg,
+                    #fff 30%,
+                    var(--accent-glow)
+                );
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .hero p {
+                font-size: 1.25rem;
+                color: var(--text-muted);
+                max-width: 600px;
+                margin-bottom: 40px;
+                line-height: 1.6;
+            }
+
+            .cta-btn {
+                background: linear-gradient(
+                    45deg,
+                    var(--accent-purple),
+                    #9440ff
+                );
+                color: white;
+                padding: 16px 40px;
+                border: none;
+                border-radius: 50px;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                box-shadow: 0 10px 30px rgba(112, 0, 255, 0.3);
+                transition: all 0.3s ease;
+                text-decoration: none;
+            }
+
+            .cta-btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 15px 35px rgba(0, 255, 204, 0.4);
+                background: linear-gradient(45deg, var(--accent-glow), #00cca3);
+                color: #000;
+            }
+
+            /* Features Section */
+            .features {
+                padding: 100px 10%;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 30px;
+            }
+
+            .card {
+                background: var(--panel-bg);
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                padding: 40px;
+                border-radius: 24px;
+                backdrop-filter: blur(10px);
+                transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            }
+
+            .card:hover {
+                transform: translateY(-10px);
+                border-color: var(--accent-glow);
+                box-shadow: 0 10px 30px rgba(0, 255, 204, 0.1);
+            }
+
+            .card-icon {
+                font-size: 2rem;
+                margin-bottom: 20px;
+                color: var(--accent-glow);
+            }
+
+            .card h3 {
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+            }
+
+            .card p {
+                color: var(--text-muted);
+                line-height: 1.6;
+            }
+
+            /* Footer */
+            footer {
+                padding: 60px 0;
+                text-align: center;
+                border-top: 1px solid rgba(255, 255, 255, 0.05);
+                background: rgba(5, 5, 10, 0.8);
+            }
+
+            .secret-trigger {
+                display: inline-block;
+                cursor: pointer;
+                color: var(--text-muted);
+                font-size: 0.9rem;
+                letter-spacing: 1px;
+                transition: color 0.3s;
+                user-select: none; /* Prevents text highlighting while tapping */
+                -webkit-user-select: none;
+            }
+
+            .secret-trigger:hover {
+                color: var(--accent-glow);
+            }
+
+            /* Toast Notification */
+            .toast {
+                position: fixed;
+                bottom: -100px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: linear-gradient(135deg, #00ffcc, #7000ff);
+                color: #000;
+                padding: 16px 36px;
+                border-radius: 50px;
+                font-weight: 700;
+                font-size: 1.1rem;
+                box-shadow:
+                    0 20px 40px rgba(0, 0, 0, 0.5),
+                    0 0 30px rgba(0, 255, 204, 0.5);
+                transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+                z-index: 1000;
+                opacity: 0;
+                letter-spacing: 1px;
+            }
+
+            .toast.show {
+                bottom: 50px;
+                opacity: 1;
+            }
+
+            /* Responsive Design */
+            @media (max-width: 768px) {
+                .hero h1 {
+                    font-size: 2.8rem;
+                }
+                header {
+                    padding: 20px 5%;
+                }
+                nav {
+                    display: none;
+                } /* Kept clean for mobile */
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Header -->
+        <header>
+            <div class="logo">Atomicsoft</div>
+            <nav>
+                <a href="#features">Features</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Building the Future <br /><span>One Atom at a Time</span></h1>
+            <p>
+                Atomicsoft engineers high-performance digital ecosystems
+                designed for modern scales. We craft hyper-fast, elegantly
+                secure, and beautiful software experiences.
+            </p>
+            <a href="#features" class="cta-btn">Explore Enterprise</a>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features">
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <h3>Quantum Speed</h3>
+                <p>
+                    Optimized compiled code architecture that guarantees
+                    millisecond delivery and render times world-wide.
+                </p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🛡️</div>
+                <h3>Atomic Security</h3>
+                <p>
+                    Zero-trust protocol integrations woven directly into the
+                    core layout of your business infrastructure.
+                </p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🎨</div>
+                <h3>Radiant UX</h3>
+                <p>
+                    Bespoke visual frameworks developed to leave an
+                    unforgettable imprint on your digital consumers.
+                </p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p class="secret-trigger" id="easterEggBtn">
+                Made with love from India
+            </p>
+        </footer>
+
+        <!-- Toast Notification -->
+        <div class="toast" id="toast">Mudhu Bangara ✨</div>
+
+        <!-- JavaScript For Hidden Feature -->
+        <script>
+            let tapCount = 0;
+            let tapTimer;
+            const trigger = document.getElementById("easterEggBtn");
+            const toast = document.getElementById("toast");
+
+            trigger.addEventListener("click", () => {
+                tapCount++;
+
+                // Reset tap count if the user pauses too long between clicks (e.g., 2 seconds)
+                clearTimeout(tapTimer);
+                tapTimer = setTimeout(() => {
+                    tapCount = 0;
+                }, 2000);
+
+                if (tapCount === 5) {
+                    showToast();
+                    tapCount = 0; // Reset after success
+                }
+            });
+
+            function showToast() {
+                toast.classList.add("show");
+
+                // Hide the toast after 3.5 seconds
+                setTimeout(() => {
+                    toast.classList.remove("show");
+                }, 3500);
+            }
+        </script>
+    </body>
+</html>
