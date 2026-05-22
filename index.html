@@ -409,7 +409,7 @@
         const startBtn = document.getElementById('gameStartBtn');
         const gameBox = document.getElementById('gameBox');
 
-        let isPlaying = false, playerLane = 1, opsScore = 0, speed = 7, obstacles = [], exhaustParticles = [], lineOffset = 0;
+        let isPlaying = false, playerLane = 1, opsScore = 0, speed = 5, obstacles = [], exhaustParticles = [], lineOffset = 0;
 
         function movePlayer(dir) {
             if(!isPlaying) return;
@@ -440,7 +440,7 @@
         function startEngineTest() {
             overlay.style.display = 'none';
             gameBox.classList.remove('shake');
-            isPlaying = true; playerLane = 1; opsScore = 0; speed = 7; obstacles = []; exhaustParticles = [];
+            isPlaying = true; playerLane = 1; opsScore = 0; speed = 5; obstacles = []; exhaustParticles = [];
 
             // Adjust canvas internal resolution to match screen space
             const rect = canvas.getBoundingClientRect();
