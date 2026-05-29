@@ -1,582 +1,414 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AtomicSoft.in | Everything Connected</title>
-    <style>
-        /* --- CSS VARIABLES & RESET --- */
-        :root {
-            --bg-color: #010204; /* Deepest space void */
-            --text-main: #ffffff;
-            --text-muted: #a0a0b5;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>AtomicSoft.in | Everything Connected</title>
+<style>
+:root{
+  --bg:#03040a;
+  --text:#f4f6ff;
+  --muted:#9aa3c7;
+  --cyan:#5fe9ff;
+  --blue:#3a7bff;
+  --magenta:#ff5fa8;
+  --amber:#ffb45f;
+  --card:rgba(10,14,28,0.45);
+  --nav-h:64px;
+  --line:rgba(255,255,255,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;
+  font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,Helvetica,sans-serif;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
 
-            /* Sleek Cyan to Deep Blue (NO PURPLE) */
-            --accent-1: #00f3ff; /* Cyan */
-            --accent-2: #0066ff; /* Deep Blue */
+/* ---------- LAYERED NEBULA BACKGROUND (No Man's Sky vibe) ---------- */
+.sky{position:fixed;inset:0;z-index:-3;overflow:hidden;background:#03040a;}
+/* deep vertical horizon gradient */
+.sky::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(120% 80% at 50% 120%, rgba(58,123,255,0.22), transparent 60%),
+    radial-gradient(100% 70% at 50% -10%, rgba(255,95,168,0.12), transparent 55%),
+    linear-gradient(180deg, #04050d 0%, #070417 40%, #0a0820 70%, #05060f 100%);
+}
+/* drifting gas clouds */
+.cloud{position:absolute;border-radius:50%;filter:blur(60px);opacity:0.55;mix-blend-mode:screen;
+  will-change:transform;}
+.c1{width:70vw;height:70vw;left:-15vw;top:-10vh;
+  background:radial-gradient(circle,rgba(255,95,168,0.55),transparent 65%);
+  animation:drift1 38s ease-in-out infinite alternate;}
+.c2{width:80vw;height:80vw;right:-25vw;top:20vh;
+  background:radial-gradient(circle,rgba(58,123,255,0.55),transparent 65%);
+  animation:drift2 46s ease-in-out infinite alternate;}
+.c3{width:55vw;height:55vw;left:10vw;bottom:-20vh;
+  background:radial-gradient(circle,rgba(95,233,255,0.4),transparent 65%);
+  animation:drift3 52s ease-in-out infinite alternate;}
+.c4{width:50vw;height:50vw;right:5vw;bottom:5vh;
+  background:radial-gradient(circle,rgba(255,180,95,0.32),transparent 65%);
+  animation:drift1 60s ease-in-out infinite alternate-reverse;}
+@keyframes drift1{from{transform:translate(0,0) scale(1);}to{transform:translate(8vw,6vh) scale(1.15);}}
+@keyframes drift2{from{transform:translate(0,0) scale(1.1);}to{transform:translate(-10vw,-5vh) scale(1);}}
+@keyframes drift3{from{transform:translate(0,0) scale(1);}to{transform:translate(6vw,-8vh) scale(1.2);}}
+/* fine grain so it doesn't band */
+.sky::after{
+  content:"";position:absolute;inset:0;opacity:0.04;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+#stars{position:fixed;inset:0;z-index:-2;}
+/* during the warp, bring the starfield (and nebula) above all content */
+body.warp #stars{z-index:9998;}
+body.warp .sky{z-index:9997;}
 
-            --card-bg: rgba(5, 7, 12, 0.6);
-            --nav-height: 70px;
-        }
+/* ---------- NAV ---------- */
+nav{position:fixed;top:0;left:0;width:100%;z-index:100;
+  background:linear-gradient(180deg,rgba(4,5,13,0.85) 0%,rgba(4,5,13,0.6) 70%,transparent 100%);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  display:flex;justify-content:space-between;align-items:center;
+  height:var(--nav-h);padding:0 clamp(16px,5vw,48px);}
+.logo{font-size:clamp(1.1rem,2.4vw,1.35rem);font-weight:800;letter-spacing:1px;cursor:pointer;
+  white-space:nowrap;flex-shrink:0;z-index:102;
+  background:linear-gradient(90deg,var(--cyan),var(--blue),var(--magenta));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-links{position:fixed;top:0;right:clamp(16px,5vw,48px);height:var(--nav-h);
+  display:flex;gap:clamp(16px,2.6vw,34px);align-items:center;z-index:101;}
+.nav-links a{color:var(--muted);text-decoration:none;font-weight:500;font-size:.92rem;
+  cursor:pointer;position:relative;padding:6px 2px;transition:color .25s;white-space:nowrap;}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;
+  background:linear-gradient(90deg,var(--cyan),var(--magenta));transition:width .3s;border-radius:2px;}
+.nav-links a:hover,.nav-links a.active{color:var(--text);}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%;}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+/* hamburger (hidden on wide screens) */
+#hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;
+  width:42px;height:42px;background:none;border:none;cursor:pointer;z-index:102;padding:8px;}
+#hamburger span{display:block;height:2px;width:24px;border-radius:2px;background:var(--text);
+  transition:transform .3s,opacity .3s;}
+body.menu-open #hamburger span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+body.menu-open #hamburger span:nth-child(2){opacity:0;}
+body.menu-open #hamburger span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
+/* ---------- LAYOUT ---------- */
+main{margin-top:var(--nav-h);position:relative;
+  min-height:calc(100vh - var(--nav-h));
+  display:flex;flex-direction:column;}
+.page{display:none;max-width:1150px;margin:0 auto;
+  padding:clamp(40px,8vw,90px) clamp(20px,5vw,40px) 60px;
+  animation:fade .6s ease;}
+.page.active{display:block;flex:1 0 auto;width:100%;}
+@keyframes fade{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
 
-        /* --- BACKGROUND CANVAS --- */
-        #bg-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-        }
+h1{font-size:clamp(2.4rem,7vw,4.6rem);line-height:1.05;margin-bottom:22px;font-weight:800;
+  letter-spacing:-1px;}
+.grad{background:linear-gradient(110deg,var(--cyan),var(--blue) 50%,var(--magenta));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+h2{font-size:clamp(1.9rem,5vw,2.9rem);margin-bottom:24px;font-weight:700;letter-spacing:-.5px;}
+.eyebrow{display:inline-block;font-size:.78rem;letter-spacing:3px;text-transform:uppercase;
+  color:var(--cyan);margin-bottom:18px;font-weight:700;opacity:.9;}
+p.lead{font-size:clamp(1rem,2.2vw,1.2rem);color:var(--muted);max-width:680px;margin-bottom:36px;}
 
-        /* --- NAVIGATION --- */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            height: var(--nav-height);
-            background: rgba(1, 2, 5, 0.7);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 5%;
-            z-index: 100;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
+/* ---------- GRID + CARDS ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;}
+.card{position:relative;background:var(--card);backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);border-radius:18px;padding:clamp(22px,4vw,30px);
+  border:1px solid var(--line);overflow:hidden;
+  transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s,box-shadow .35s;}
+.card .icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;
+  justify-content:center;font-size:1.3rem;margin-bottom:16px;
+  background:linear-gradient(135deg,rgba(95,233,255,.18),rgba(255,95,168,.18));
+  border:1px solid var(--line);}
+.card h3{font-size:1.2rem;margin-bottom:10px;font-weight:700;}
+.card p{color:var(--muted);font-size:.94rem;}
+.card:hover{transform:translateY(-6px);border-color:rgba(95,233,255,.45);
+  box-shadow:0 20px 50px rgba(58,123,255,.18);}
+.card.wide{grid-column:1/-1;}
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            background: linear-gradient(45deg, var(--accent-1), var(--accent-2));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            cursor: pointer;
-        }
+/* ---------- BUTTON ---------- */
+.btn{display:inline-block;padding:15px 34px;border:none;border-radius:40px;cursor:pointer;
+  font-weight:800;font-size:1rem;color:#03040a;text-decoration:none;
+  background:linear-gradient(90deg,var(--cyan),var(--blue));
+  transition:transform .2s,box-shadow .3s;}
+.btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 0 30px rgba(95,233,255,.5);}
 
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
+/* ---------- CONTACT FORM ---------- */
+.contact-form{max-width:560px;display:flex;flex-direction:column;gap:16px;}
+.input-group{position:relative;background:rgba(8,11,24,.6);border-radius:12px;
+  border:1px solid var(--line);transition:border-color .3s,box-shadow .3s;}
+.input-group:focus-within{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(95,233,255,.12);}
+.contact-form input,.contact-form textarea{width:100%;padding:16px;background:transparent;
+  border:none;color:var(--text);font-size:1rem;border-radius:12px;resize:vertical;}
+.contact-form input::placeholder,.contact-form textarea::placeholder{color:var(--muted);}
+.contact-form input:focus,.contact-form textarea:focus{outline:none;}
 
-        /* Animated Menu Buttons */
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            position: relative;
-            padding: 5px 0;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
+/* ---------- SECRET FOOTER ---------- */
+#secret-footer{position:relative;display:block;margin:auto auto 0;background:none;border:none;
+  padding:30px 20px;color:rgba(255,255,255,.32);font-size:.88rem;cursor:pointer;
+  user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;
+  -webkit-touch-callout:none;letter-spacing:1px;overflow:visible;
+  transition:color .2s,transform .1s;animation:pulse 4s infinite alternate;}
+#secret-footer span{pointer-events:none;}
+#secret-footer:active{color:var(--cyan);transform:scale(.95);}
+@keyframes pulse{from{opacity:.4;}to{opacity:.8;text-shadow:0 0 12px rgba(95,233,255,.3);}}
 
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 50%;
-            background: linear-gradient(90deg, transparent, var(--accent-1), transparent);
-            transition: width 0.3s ease, left 0.3s ease;
-            opacity: 0;
-        }
+/* meteor that flies in and strikes the footer */
+.meteor{position:absolute;top:-300px;right:-300px;width:4px;height:90px;border-radius:2px;
+  background:linear-gradient(180deg,transparent,#5fe9ff,#fff);
+  box-shadow:0 0 18px 4px rgba(95,233,255,.9),0 0 40px 8px rgba(58,123,255,.5);
+  transform:rotate(45deg);pointer-events:none;z-index:50;
+  animation:meteor-fall .55s cubic-bezier(.55,.06,.68,.19) forwards;}
+@keyframes meteor-fall{
+  0%{top:-300px;right:-300px;opacity:0;}
+  10%{opacity:1;}
+  100%{top:50%;right:50%;opacity:1;}
+}
+/* impact flash + shockwave on hit */
+.impact{position:absolute;top:50%;left:50%;width:10px;height:10px;border-radius:50%;
+  transform:translate(-50%,-50%);pointer-events:none;z-index:49;
+  background:radial-gradient(circle,#fff,#5fe9ff 40%,transparent 70%);
+  animation:impact-flash .6s ease-out forwards;}
+@keyframes impact-flash{
+  0%{width:10px;height:10px;opacity:1;}
+  100%{width:320px;height:320px;opacity:0;}
+}
+/* the revealed name */
+#secret-footer.struck #footer-text{
+  color:#fff;text-shadow:0 0 18px rgba(95,233,255,.9),0 0 40px rgba(255,95,168,.6);
+  letter-spacing:2px;font-weight:800;animation:none;}
 
-        .nav-links a:hover::after, .nav-links a.active::after {
-            width: 100%;
-            left: 0;
-            opacity: 1;
-        }
+/* ---------- BIG BANG ---------- */
+#big-bang{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle,#fff 0%,#ccffff 45%,var(--blue) 100%);
+  opacity:0;pointer-events:none;transition:opacity 1.5s cubic-bezier(.4,0,.2,1);}
+#mudhu{color:#000;font-size:clamp(2.2rem,9vw,6rem);text-transform:uppercase;font-weight:900;
+  letter-spacing:clamp(2px,2vw,14px);text-align:center;opacity:0;transform:scale(.8) translateY(20px);
+  text-shadow:0 0 40px rgba(255,255,255,.8),0 0 80px rgba(95,233,255,.8);
+  transition:opacity 1.5s ease-out,transform 2.5s cubic-bezier(.175,.885,.32,1.275);}
+body.bang #big-bang{opacity:1;}
+body.bang #mudhu{opacity:1;transform:scale(1) translateY(0);}
+body.bang-out #big-bang{opacity:0;transition-duration:3s;}
 
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--accent-1);
-        }
-
-        /* --- PAGE CONTAINER (SPA LOGIC) --- */
-        main {
-            margin-top: var(--nav-height);
-            min-height: calc(100vh - var(--nav-height));
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .page {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 40px 5%;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease, visibility 0.5s ease;
-            flex-grow: 1;
-        }
-
-        .page.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-            position: relative;
-        }
-
-        /* --- TYPOGRAPHY & LAYOUT --- */
-        h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); margin-bottom: 20px; line-height: 1.1; }
-        h2 { font-size: clamp(2rem, 4vw, 2.8rem); margin-bottom: 30px; color: var(--accent-1); }
-        p.lead { font-size: clamp(1rem, 2vw, 1.2rem); color: var(--text-muted); max-width: 800px; margin-bottom: 40px; }
-
-        /* --- GRID SYSTEM --- */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 40px; }
-
-        /* --- TEXT BOXES / CARDS (Gradient Falloff Borders) --- */
-        .card {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 16px;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            position: relative;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        /* The Masked Gradient Border */
-        .card::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            border-radius: 16px;
-            padding: 1px; /* Thickness of the border */
-            /* Gradient fades from 40% cyan at the top to transparent at the bottom */
-            background: linear-gradient(180deg, rgba(0, 243, 255, 0.4) 0%, transparent 80%);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
-            transition: background 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 102, 255, 0.15);
-        }
-
-        .card:hover::before {
-            background: linear-gradient(180deg, var(--accent-1) 0%, transparent 80%);
-        }
-
-        .card h3 { font-size: 1.4rem; margin-bottom: 15px; color: var(--accent-1); }
-        .card p { color: var(--text-muted); font-size: 0.95rem; }
-
-        /* --- BUTTONS --- */
-        .btn {
-            display: inline-block;
-            padding: 14px 32px;
-            background: linear-gradient(45deg, var(--accent-1), var(--accent-2));
-            color: #010204; /* Dark text for contrast */
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: 800;
-            border: none;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            font-size: 1rem;
-        }
-        .btn:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(0, 243, 255, 0.5); }
-
-        /* --- CONTACT FORM (Gradient Falloff Borders) --- */
-        .contact-form { max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
-
-        .input-group {
-            position: relative;
-            background: rgba(5, 7, 12, 0.6);
-            border-radius: 10px;
-        }
-
-        .input-group::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            border-radius: 10px;
-            padding: 1px;
-            /* Sideways gradient falloff for inputs */
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            transition: background 0.4s ease;
-            pointer-events: none;
-        }
-
-        .input-group:focus-within::before {
-            background: linear-gradient(90deg, transparent, var(--accent-1), transparent);
-        }
-
-        .contact-form input, .contact-form textarea {
-            width: 100%;
-            padding: 16px;
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 1rem;
-            border-radius: 10px;
-        }
-
-        .contact-form input:focus, .contact-form textarea:focus { outline: none; }
-
-        /* --- SECRET FOOTER (True Button to prevent text selection) --- */
-        #secret-footer {
-            display: block;
-            margin: 0 auto;
-            background: transparent;
-            border: none;
-            padding: 40px 20px 20px 20px;
-            color: rgba(255, 255, 255, 0.3);
-            font-size: 0.9rem;
-            cursor: pointer;
-            user-select: none; /* Make unselectable like a desktop button */
-            -webkit-user-select: none;
-            letter-spacing: 1px;
-            animation: pulse-text 4s infinite alternate; /* Subtle continuous pulse */
-            transition: color 0.2s ease, transform 0.1s ease;
-        }
-
-        #secret-footer:active {
-            color: var(--accent-1);
-            transform: scale(0.95);
-        }
-
-        @keyframes pulse-text {
-            0% { opacity: 0.4; text-shadow: 0 0 0 transparent; }
-            100% { opacity: 0.8; text-shadow: 0 0 10px rgba(0, 243, 255, 0.2); }
-        }
-
-        /* --- BIG BANG OVERLAY --- */
-        #big-bang-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: radial-gradient(circle, #ffffff 0%, #ccffff 50%, #0066ff 100%);
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        #mudhu-text {
-            color: #000;
-            font-size: clamp(2.5rem, 8vw, 6rem);
-            text-transform: uppercase;
-            font-weight: 900;
-            letter-spacing: clamp(2px, 2vw, 15px);
-            text-shadow: 0 0 40px rgba(255, 255, 255, 0.8), 0 0 80px rgba(0, 243, 255, 0.8);
-            opacity: 0;
-            transform: scale(0.8) translateY(20px);
-            transition: opacity 1.5s ease-out, transform 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-align: center;
-        }
-
-        body.bang-active #big-bang-overlay { opacity: 1; }
-        body.bang-active #mudhu-text { opacity: 1; transform: scale(1) translateY(0); }
-        body.bang-fade-out #big-bang-overlay { opacity: 0; transition-duration: 3s; }
-
-        /* Mobile Nav Adjustments */
-        @media (max-width: 768px) {
-            .nav-links {
-                position: fixed; bottom: 0; left: 0; width: 100%; height: 60px;
-                background: rgba(1, 2, 5, 0.95); border-top: 1px solid rgba(255,255,255,0.1);
-                justify-content: space-around; padding: 0 10px; z-index: 101; top: auto;
-            }
-            main { margin-bottom: 60px; }
-            .nav-links a { font-size: 0.8rem; display: flex; align-items: center; }
-            .nav-links a::after { display: none; } /* Disable underline animation on mobile bottom nav */
-        }
-    </style>
+/* ---------- MOBILE / NARROW ---------- */
+@media (max-width:820px){
+  #hamburger{display:flex;}
+  .nav-links{position:fixed;top:0;left:0;right:auto;width:min(78vw,320px);height:100vh;height:100dvh;
+    flex-direction:column;align-items:flex-start;justify-content:center;gap:24px;
+    padding:80px 0 0 34px;z-index:200;
+    background:rgba(6,8,18,0.97);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+    border-right:1px solid var(--line);box-shadow:8px 0 40px rgba(0,0,0,.5);
+    transform:translateX(-100%);transition:transform .35s cubic-bezier(.2,.8,.2,1);
+    pointer-events:none;}
+  body.menu-open .nav-links{transform:translateX(0);pointer-events:auto;}
+  .nav-links a{font-size:1.3rem;padding:10px 24px 10px 0;width:100%;}
+  .grid{grid-template-columns:1fr;}
+  #hamburger{z-index:201;}
+  /* dim backdrop behind the panel */
+  #nav-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:150;
+    opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s;}
+  body.menu-open #nav-overlay{opacity:1;visibility:visible;}
+}
+@media (prefers-reduced-motion:reduce){
+  .cloud{animation:none;}
+}
+</style>
 </head>
 <body>
 
-    <canvas id="bg-canvas"></canvas>
+<div class="sky">
+  <div class="cloud c1"></div>
+  <div class="cloud c2"></div>
+  <div class="cloud c3"></div>
+  <div class="cloud c4"></div>
+</div>
+<canvas id="stars"></canvas>
 
-    <div id="big-bang-overlay">
-        <h1 id="mudhu-text">Mudhu Bangara</h1>
+<div id="big-bang"><h1 id="mudhu">Mudhu Bangara</h1></div>
+
+<nav>
+  <div class="logo" onclick="navigate('home')">AtomicSoft.in</div>
+  <button id="hamburger" aria-label="Menu" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-links" id="navLinks">
+  <a onclick="navigate('home')" class="active" data-target="home">Home</a>
+  <a onclick="navigate('about')" data-target="about">About</a>
+  <a onclick="navigate('divisions')" data-target="divisions">Divisions</a>
+  <a onclick="navigate('vision')" data-target="vision">Vision</a>
+  <a onclick="navigate('contact')" data-target="contact">Contact</a>
+</div>
+<div id="nav-overlay" onclick="closeMenu()"></div>
+
+<main>
+  <section id="home" class="page active">
+    <span class="eyebrow">Everything Connected</span>
+    <h1>Engineering the<br><span class="grad">Fabric of Tomorrow.</span></h1>
+    <p class="lead">From the deepest oceans to the farthest reaches of space. Software, hardware, biology, and intelligence unified under one absolute vision.</p>
+    <button class="btn" onclick="navigate('divisions')">Explore Our Sectors</button>
+  </section>
+
+  <section id="about" class="page">
+    <span class="eyebrow">Project Status</span>
+    <h2>A Concept in Motion</h2>
+    <div class="grid">
+      <div class="card wide">
+        <div class="icon">🛰️</div>
+        <h3>Concept Demonstration</h3>
+        <p>Welcome to the AtomicSoft.in development preview.</p><br>
+        <p>This website is currently a conceptual demonstration and a placeholder for a future project. The divisions, technologies, and capabilities detailed across this site represent a long-term operational vision, not current realities or active sectors.</p><br>
+        <p>We are building the foundation for what is to come.</p>
+      </div>
     </div>
+  </section>
 
-    <nav>
-        <div class="logo" onclick="navigate('home')">AtomicSoft.in</div>
-        <div class="nav-links">
-            <a onclick="navigate('home')" class="active" data-target="home">Home</a>
-            <a onclick="navigate('about')" data-target="about">About</a>
-            <a onclick="navigate('divisions')" data-target="divisions">Divisions</a>
-            <a onclick="navigate('vision')" data-target="vision">Vision</a>
-            <a onclick="navigate('contact')" data-target="contact">Contact</a>
-        </div>
-    </nav>
+  <section id="divisions" class="page">
+    <span class="eyebrow">Capabilities</span>
+    <h2>Infinite Divisions</h2>
+    <p class="lead">We don't do just one thing. We do everything. Synergy across disciplines is the key to universal progress.</p>
+    <div class="grid">
+      <div class="card"><div class="icon">🧠</div><h3>Artificial Intelligence</h3><p>Building cognitive architectures and AGI frameworks to solve humanity's most complex bottlenecks.</p></div>
+      <div class="card"><div class="icon">🚀</div><h3>Space Exploration</h3><p>Orbital logistics, propulsion software, and off-world habitat management systems.</p></div>
+      <div class="card"><div class="icon">🛡️</div><h3>Defense & Security</h3><p>Next-gen cybersecurity, autonomous tactical systems, and unbreachable encrypted networks.</p></div>
+      <div class="card"><div class="icon">🎮</div><h3>Hardware & Gaming</h3><p>Quantum processing chips and ultra-high-fidelity engine architecture.</p></div>
+      <div class="card"><div class="icon">🧬</div><h3>Human Wellbeing</h3><p>Biometric tracking, genome-tailored wellness algorithms, and AI-driven healthcare diagnostics.</p></div>
+      <div class="card"><div class="icon">🕶️</div><h3>AR / VR / XR</h3><p>Constructing hyper-realistic digital overlays for industry, education, and entertainment.</p></div>
+    </div>
+  </section>
 
-    <main>
-        <section id="home" class="page active">
-            <h1>Engineering the<br>Fabric of Tomorrow.</h1>
-            <p class="lead">From the deepest oceans to the farthest reaches of space. Software, hardware, biology, and intelligence unified under one absolute vision.</p>
-            <button class="btn" onclick="navigate('divisions')">Explore Our Sectors</button>
-        </section>
+  <section id="vision" class="page">
+    <span class="eyebrow">Philosophy</span>
+    <h2>The Atomic Theory</h2>
+    <p class="lead">At AtomicSoft, algorithms used to map galaxies are optimized to restore coral reefs.</p>
+    <div class="grid">
+      <div class="card wide">
+        <div class="icon">✦</div>
+        <h3>The Convergence</h3>
+        <p>By housing software development, hardware engineering, biological research, and spatial exploration under one domain, we eliminate silos. Data flows freely. A breakthrough in gaming rendering engines immediately enhances our AR defense simulations. A discovery in marine biodiversity monitoring scales up to inform human healthcare analytics. This is not just a company; it is an ecosystem of progress.</p>
+      </div>
+    </div>
+  </section>
 
-        <section id="about" class="page">
-            <h2>Project Status</h2>
-            <div class="grid">
-                <div class="card" style="grid-column: 1 / -1;">
-                    <h3>Concept Demonstration</h3>
-                    <p>Welcome to the AtomicSoft.in development preview.</p>
-                    <br>
-                    <p>Please note that this website is currently a conceptual demonstration and a placeholder for a future project. The divisions, technologies, and capabilities detailed across this site represent a long-term operational vision, not current realities or active sectors.</p>
-                    <br>
-                    <p>We are building the foundation for what is to come.</p>
-                </div>
-            </div>
-        </section>
+  <section id="contact" class="page">
+    <span class="eyebrow">Get in Touch</span>
+    <h2>Initiate Connection</h2>
+    <p class="lead">Whether you are a government entity, an independent researcher, or a consumer, the network is open.</p>
+    <form class="contact-form" onsubmit="event.preventDefault(); this.reset(); alert('Transmission Sent to AtomicSoft Servers.');">
+      <div class="input-group"><input type="text" placeholder="Designation / Name" required></div>
+      <div class="input-group"><input type="email" placeholder="Encrypted Email Address" required></div>
+      <div class="input-group"><textarea rows="5" placeholder="State your objective..." required></textarea></div>
+      <button type="submit" class="btn">Transmit Data</button>
+    </form>
+  </section>
 
-        <section id="divisions" class="page">
-            <h2>Infinite Divisions</h2>
-            <p class="lead">We don't do just one thing. We do everything. Synergy across disciplines is the key to universal progress.</p>
-            <div class="grid">
-                <div class="card"><h3>Artificial Intelligence</h3><p>Building cognitive architectures and AGI frameworks to solve humanity's most complex bottlenecks.</p></div>
-                <div class="card"><h3>Space Exploration</h3><p>Orbital logistics, propulsion software, and off-world habitat management systems.</p></div>
-                <div class="card"><h3>Defense & Security</h3><p>Next-gen cybersecurity, autonomous tactical systems, and unbreachable encrypted networks.</p></div>
-                <div class="card"><h3>Hardware & Gaming</h3><p>Quantum processing chips and ultra-high-fidelity engine architecture.</p></div>
-                <div class="card"><h3>Human Wellbeing</h3><p>Biometric tracking, genome-tailored wellness algorithms, and AI-driven healthcare diagnostics.</p></div>
-                <div class="card"><h3>AR / VR / XR</h3><p>Constructing hyper-realistic digital overlays for industry, education, and entertainment.</p></div>
-            </div>
-        </section>
+  <button id="secret-footer"><span id="footer-text">Made with ❤️ from India</span></button>
+</main>
 
-        <section id="vision" class="page">
-            <h2>The Atomic Theory</h2>
-            <p class="lead">At AtomicSoft, algorithms used to map galaxies are optimized to restore coral reefs.</p>
-            <div class="grid">
-                <div class="card" style="grid-column: 1 / -1;">
-                    <h3>The Convergence</h3>
-                    <p>By housing software development, hardware engineering, biological research, and spatial exploration under one domain, we eliminate silos. Data flows freely. A breakthrough in gaming rendering engines immediately enhances our AR defense simulations. A discovery in marine biodiversity monitoring scales up to inform human healthcare analytics. This is not just a company; it is an ecosystem of progress.</p>
-                </div>
-            </div>
-        </section>
+<script>
+function navigate(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const link=document.querySelector(`.nav-links a[data-target="${id}"]`);
+  if(link)link.classList.add('active');
+  closeMenu();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleMenu(){document.body.classList.toggle('menu-open');}
+function closeMenu(){document.body.classList.remove('menu-open');}
 
-        <section id="contact" class="page">
-            <h2>Initiate Connection</h2>
-            <p class="lead">Whether you are a government entity, an independent researcher, or a consumer, the network is open.</p>
-            <form class="contact-form" onsubmit="event.preventDefault(); alert('Transmission Sent to AtomicSoft Servers.');">
-                <div class="input-group">
-                    <input type="text" placeholder="Designation / Name" required>
-                </div>
-                <div class="input-group">
-                    <input type="email" placeholder="Encrypted Email Address" required>
-                </div>
-                <div class="input-group">
-                    <textarea rows="5" placeholder="State your objective..." required></textarea>
-                </div>
-                <button type="submit" class="btn">Transmit Data</button>
-            </form>
-        </section>
+/* ---------- 3D STAR FIELD ---------- */
+const cv=document.getElementById('stars'),x=cv.getContext('2d');
+let W,H,cx,cy,stars=[];
+const N=window.innerWidth<900?900:2200, FOV=320, base=0.45;
+let speed=base,bang=false;
+const cols=['255,255,255','210,235,255','190,255,255','255,225,200','255,200,235'];
+function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight;cx=W/2;cy=H/2;}
+addEventListener('resize',resize);resize();
+class S{constructor(){this.r(true);}
+  r(rz){this.x=(Math.random()-.5)*W*3;this.y=(Math.random()-.5)*H*3;
+    this.z=rz?Math.random()*1800:1800;this.pz=this.z;
+    this.s=Math.random()*1.4+.5;this.o=Math.random()*.6+.4;
+    this.c=cols[Math.floor(Math.random()*cols.length)];}
+  u(sp){this.pz=this.z;this.z-=sp;if(this.z<=0)this.r(false);}
+  d(){const k=FOV/this.z,px=this.x*k+cx,py=this.y*k+cy;
+    if(px<-40||px>W+40||py<-40||py>H+40)return;
+    const o=Math.min(1,(1800-this.z)/450)*this.o;
+    const sz=Math.max(.9,Math.min(2.4,this.s*k));
+    if(bang&&speed>5){const pk=FOV/this.pz;
+      x.beginPath();x.moveTo(this.x*pk+cx,this.y*pk+cy);x.lineTo(px,py);
+      x.strokeStyle=`rgba(${this.c},${o})`;x.lineWidth=sz;x.stroke();}
+    else{x.fillStyle=`rgba(${this.c},${o})`;x.fillRect(px,py,sz,sz);}}}
+for(let i=0;i<N;i++)stars.push(new S());
+function loop(){x.clearRect(0,0,W,H);
+  stars.sort((a,b)=>b.z-a.z);
+  for(const s of stars){s.u(speed);s.d();}
+  requestAnimationFrame(loop);}
+loop();
 
-        <button id="secret-footer">Made with &lt;3 from India</button>
-    </main>
+/* ---------- FOOTER: 5-TAP BIG BANG + LONG-PRESS METEOR ---------- */
+const f=document.getElementById('secret-footer');
+const ftext=document.getElementById('footer-text');
+let taps=[],pressTimer=null,longFired=false,meteorBusy=false;
 
-    <script>
-        // --- SPA ROUTING LOGIC ---
-        function navigate(pageId) {
-            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-            document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            const activeLink = document.querySelector(`.nav-links a[data-target="${pageId}"]`);
-            if(activeLink) activeLink.classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+function startPress(e){
+  e.preventDefault();
+  if(bang||meteorBusy)return;
+  longFired=false;
+  pressTimer=setTimeout(()=>{longFired=true;meteorStrike();},600);
+}
+function endPress(e){
+  e.preventDefault();
+  clearTimeout(pressTimer);
+  if(bang||meteorBusy)return;
+  if(longFired){longFired=false;return;}   // long press already handled; don't count as tap
+  registerTap();
+}
+function cancelPress(){clearTimeout(pressTimer);longFired=false;}
 
-        // --- PURE 3D ZOOMING STARS ENGINE (Now with fixed visibility constraints) ---
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        let width, height, centerX, centerY;
+function registerTap(){
+  const now=Date.now();taps=taps.filter(t=>now-t<=2000);taps.push(now);
+  f.style.color='var(--cyan)';setTimeout(()=>{if(!bang)f.style.color='';},150);
+  if(taps.length>=5){fire();taps=[];}
+}
 
-        let stars = [];
+function meteorStrike(){
+  meteorBusy=true;
+  const meteor=document.createElement('div');meteor.className='meteor';
+  f.appendChild(meteor);
+  // impact + name reveal once the meteor lands (~550ms)
+  setTimeout(()=>{
+    const flash=document.createElement('div');flash.className='impact';
+    f.appendChild(flash);
+    f.classList.add('struck');
+    ftext.textContent='Ravichandu S';
+    meteor.remove();
+    setTimeout(()=>flash.remove(),600);
+  },540);
+  // reset back to original after a beat
+  setTimeout(()=>{
+    f.classList.remove('struck');
+    ftext.textContent='Made with ❤️ from India';
+    meteorBusy=false;
+  },2600);
+}
 
-        const numStars = 4000;
-        const fov = 400;
+f.addEventListener('mousedown',startPress);
+f.addEventListener('mouseup',endPress);
+f.addEventListener('mouseleave',cancelPress);
+f.addEventListener('touchstart',startPress,{passive:false});
+f.addEventListener('touchend',endPress,{passive:false});
+f.addEventListener('touchcancel',cancelPress);
+f.addEventListener('contextmenu',e=>e.preventDefault()); // block long-press menu on mobile
 
-        let baseSpeed = 0.5; // Smooth idle speed
-        let warpSpeed = baseSpeed;
-        let isBigBang = false;
-
-        const starColors = [
-            '255, 255, 255', // Pure White
-            '220, 240, 255', // Ice Blue
-            '200, 255, 255', // Cyan tint
-            '255, 250, 230'  // Faint starlight yellow
-        ];
-
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            centerX = width / 2;
-            centerY = height / 2;
-        }
-
-        window.addEventListener('resize', resize);
-        resize();
-
-        class Star {
-            constructor() {
-                this.reset(true);
-            }
-
-            reset(randomZ = false) {
-                // FIXED: Tightened the spread from 6x width to 3.5x width to heavily condense the stars
-                this.x = (Math.random() - 0.5) * width * 3.5;
-                this.y = (Math.random() - 0.5) * height * 3.5;
-
-                // Spawn depth
-                this.z = randomZ ? Math.random() * 2000 : 2000;
-                this.prevZ = this.z;
-
-                // Increased base size and opacity so they pop
-                this.baseSize = Math.random() * 1.5 + 0.5;
-                this.baseOpacity = Math.random() * 0.7 + 0.3;
-                this.colorStr = starColors[Math.floor(Math.random() * starColors.length)];
-            }
-
-            update(speed) {
-                this.prevZ = this.z;
-                this.z -= speed;
-                if (this.z <= 0) this.reset(false);
-            }
-
-            draw() {
-                const scale = fov / this.z;
-                const projX = this.x * scale + centerX;
-                const projY = this.y * scale + centerY;
-
-                // Culling: don't draw if heavily off-screen
-                if (projX < -50 || projX > width + 50 || projY < -50 || projY > height + 50) return;
-
-                // Fades in naturally as it moves from 2000 towards the camera
-                const opacity = Math.min(1, (2000 - this.z) / 500) * this.baseOpacity;
-
-                // FIXED: Hard minimum size of 1.2px ensures stars are never erased by anti-aliasing
-                // Maximum size capped at 2.5px to prevent snowballing
-                const projSize = Math.max(1.2, Math.min(2.5, this.baseSize * scale));
-
-                ctx.fillStyle = `rgba(${this.colorStr}, ${opacity})`;
-
-                if (isBigBang && warpSpeed > 5) {
-                    const prevScale = fov / this.prevZ;
-                    const prevProjX = this.x * prevScale + centerX;
-                    const prevProjY = this.y * prevScale + centerY;
-
-                    ctx.beginPath();
-                    ctx.moveTo(prevProjX, prevProjY);
-                    ctx.lineTo(projX, projY);
-                    ctx.strokeStyle = `rgba(${this.colorStr}, ${opacity})`;
-                    ctx.lineWidth = projSize;
-                    ctx.stroke();
-                } else {
-                    ctx.fillRect(projX, projY, projSize, projSize);
-                }
-            }
-        }
-
-        // Initialize Engine
-        for (let i = 0; i < numStars; i++) stars.push(new Star());
-
-        function animate() {
-            ctx.fillStyle = '#010204'; // Pure deep void
-            ctx.fillRect(0, 0, width, height);
-
-            stars.sort((a, b) => b.z - a.z); // Render distant stars first
-            for (let i = 0; i < stars.length; i++) {
-                stars[i].update(warpSpeed);
-                stars[i].draw();
-            }
-
-            requestAnimationFrame(animate);
-        }
-        animate();
-
-        // --- BIG BANG INTERACTION LOGIC ---
-        const footer = document.getElementById('secret-footer');
-        let clickTimestamps = [];
-
-        function handleFooterTap(e) {
-            e.preventDefault(); // Extra safeguard against native text selection
-            if(isBigBang) return;
-
-            const now = Date.now();
-            clickTimestamps = clickTimestamps.filter(time => now - time <= 2000);
-            clickTimestamps.push(now);
-
-            // Flash cyan on tap
-            footer.style.color = 'var(--accent-1)';
-            setTimeout(() => { if(!isBigBang) footer.style.color = ''; }, 150);
-
-            if (clickTimestamps.length >= 5) {
-                triggerBigBang();
-                clickTimestamps = [];
-            }
-        }
-
-        // Listen for both touch and click for maximum compatibility
-        footer.addEventListener('click', handleFooterTap);
-        footer.addEventListener('touchstart', handleFooterTap, {passive: false});
-
-        function triggerBigBang() {
-            isBigBang = true;
-
-            // Warp drive engage
-            let warpInterval = setInterval(() => {
-                warpSpeed *= 1.4;
-                if(warpSpeed > 300) clearInterval(warpInterval);
-            }, 50);
-
-            // Flash overlay and text
-            setTimeout(() => {
-                document.body.classList.add('bang-active');
-                warpSpeed = 0.1; // Freeze space during flash
-            }, 1200);
-
-            // Fade out and slow down
-            setTimeout(() => {
-                document.body.classList.remove('bang-active');
-                document.body.classList.add('bang-fade-out');
-
-                let restoreInterval = setInterval(() => {
-                    warpSpeed += (baseSpeed - warpSpeed) * 0.1;
-                    if(Math.abs(warpSpeed - baseSpeed) < 0.1) {
-                        warpSpeed = baseSpeed;
-                        clearInterval(restoreInterval);
-                    }
-                }, 50);
-            }, 4500);
-
-            // Reset interaction
-            setTimeout(() => {
-                document.body.classList.remove('bang-fade-out');
-                isBigBang = false;
-            }, 7500);
-        }
-    </script>
+function fire(){bang=true;document.body.classList.add('warp');
+  let wi=setInterval(()=>{speed*=1.4;if(speed>300)clearInterval(wi);},50);
+  setTimeout(()=>{document.body.classList.add('bang');speed=.1;},1200);
+  setTimeout(()=>{document.body.classList.remove('bang');document.body.classList.add('bang-out');
+    let ri=setInterval(()=>{speed+=(base-speed)*.1;
+      if(Math.abs(speed-base)<.1){speed=base;clearInterval(ri);}},50);},4500);
+  setTimeout(()=>{document.body.classList.remove('bang-out');document.body.classList.remove('warp');bang=false;},7500);}
+</script>
 </body>
 </html>
