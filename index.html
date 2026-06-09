@@ -22,46 +22,77 @@
 html{scroll-behavior:smooth;}
 body{
   background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.65;
-  -webkit-font-smoothing:antialiased;
+  -webkit-font-smoothing:antialiased;cursor:none;
 }
+body.show-cursor, body.show-cursor *{cursor:auto !important;}
 
-/* ---------- LAYERED NEBULA BACKGROUND (No Man's Sky vibe) ---------- */
-.sky{position:fixed;inset:0;z-index:-3;overflow:hidden;background:#03040a;}
-/* deep vertical horizon gradient */
+/* custom cursor */
+#cursor-dot{position:fixed;width:6px;height:6px;border-radius:50%;background:var(--cyan);
+  pointer-events:none;z-index:10000;transform:translate(-50%,-50%);
+  box-shadow:0 0 10px var(--cyan),0 0 20px rgba(95,233,255,.5);
+  transition:width .15s,height .15s,background .15s;}
+#cursor-ring{position:fixed;width:28px;height:28px;border-radius:50%;pointer-events:none;z-index:9999;
+  border:1.5px solid rgba(95,233,255,.4);transform:translate(-50%,-50%);
+  transition:width .25s,height .25s,border-color .25s,transform .08s;}
+#cursor-dot.hover,#cursor-ring.hover{width:12px;height:12px;background:var(--magenta);
+  box-shadow:0 0 16px var(--magenta),0 0 32px rgba(255,95,168,.5);}
+#cursor-ring.hover{width:40px;height:40px;border-color:rgba(255,95,168,.5);border-width:2px;}
+
+/* ---------- GALACTIC BACKGROUND ---------- */
+.sky{position:fixed;inset:0;z-index:-3;overflow:hidden;background:#03040a;transition:transform .6s ease-out;}
+/* galactic core */
+.galaxy-core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:min(80vw,600px);height:min(80vw,600px);border-radius:50%;
+  background:radial-gradient(circle,
+    rgba(255,240,255,0.18) 0%,
+    rgba(200,220,255,0.12) 8%,
+    rgba(140,180,255,0.08) 18%,
+    rgba(80,120,255,0.05) 30%,
+    rgba(40,60,180,0.03) 45%,
+    transparent 65%
+  );
+  animation:corePulse 12s ease-in-out infinite;
+  pointer-events:none;z-index:0;
+  box-shadow:0 0 120px rgba(58,123,255,.12),0 0 300px rgba(95,233,255,.06);
+}
+@keyframes corePulse{0%,100%{opacity:0.8;transform:translate(-50%,-50%) scale(1);}50%{opacity:1;transform:translate(-50%,-50%) scale(1.08);}}
 .sky::before{
   content:"";position:absolute;inset:0;
   background:
-    radial-gradient(120% 80% at 50% 120%, rgba(58,123,255,0.22), transparent 60%),
-    radial-gradient(100% 70% at 50% -10%, rgba(255,95,168,0.12), transparent 55%),
-    linear-gradient(180deg, #04050d 0%, #070417 40%, #0a0820 70%, #05060f 100%);
+    radial-gradient(80% 60% at 50% 50%, rgba(58,123,255,0.15), transparent 55%),
+    radial-gradient(100% 70% at 30% 20%, rgba(255,95,168,0.06), transparent 50%),
+    radial-gradient(90% 60% at 70% 80%, rgba(95,233,255,0.05), transparent 50%),
+    linear-gradient(180deg, #04050d 0%, #060316 35%, #08041a 65%, #04040c 100%);
 }
-/* drifting gas clouds */
-.cloud{position:absolute;border-radius:50%;filter:blur(60px);opacity:0.55;mix-blend-mode:screen;
-  will-change:transform;}
+.cloud{position:absolute;border-radius:50%;filter:blur(60px);opacity:0.45;mix-blend-mode:screen;will-change:transform;}
 .c1{width:70vw;height:70vw;left:-15vw;top:-10vh;
-  background:radial-gradient(circle,rgba(255,95,168,0.55),transparent 65%);
+  background:radial-gradient(circle,rgba(255,95,168,0.4),transparent 65%);
   animation:drift1 38s ease-in-out infinite alternate;}
 .c2{width:80vw;height:80vw;right:-25vw;top:20vh;
-  background:radial-gradient(circle,rgba(58,123,255,0.55),transparent 65%);
+  background:radial-gradient(circle,rgba(58,123,255,0.4),transparent 65%);
   animation:drift2 46s ease-in-out infinite alternate;}
 .c3{width:55vw;height:55vw;left:10vw;bottom:-20vh;
-  background:radial-gradient(circle,rgba(95,233,255,0.4),transparent 65%);
+  background:radial-gradient(circle,rgba(95,233,255,0.3),transparent 65%);
   animation:drift3 52s ease-in-out infinite alternate;}
 .c4{width:50vw;height:50vw;right:5vw;bottom:5vh;
-  background:radial-gradient(circle,rgba(255,180,95,0.32),transparent 65%);
+  background:radial-gradient(circle,rgba(255,180,95,0.22),transparent 65%);
   animation:drift1 60s ease-in-out infinite alternate-reverse;}
 @keyframes drift1{from{transform:translate(0,0) scale(1);}to{transform:translate(8vw,6vh) scale(1.15);}}
 @keyframes drift2{from{transform:translate(0,0) scale(1.1);}to{transform:translate(-10vw,-5vh) scale(1);}}
 @keyframes drift3{from{transform:translate(0,0) scale(1);}to{transform:translate(6vw,-8vh) scale(1.2);}}
-/* fine grain so it doesn't band */
 .sky::after{
-  content:"";position:absolute;inset:0;opacity:0.04;pointer-events:none;
+  content:"";position:absolute;inset:0;opacity:0.03;pointer-events:none;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
-#stars{position:fixed;inset:0;z-index:-2;}
-/* during the warp, bring the starfield (and nebula) above all content */
+#stars{position:fixed;inset:0;z-index:-2;pointer-events:none;}
 body.warp #stars{z-index:9998;}
 body.warp .sky{z-index:9997;}
+
+/* floating geometric shapes */
+.float-shape{position:fixed;pointer-events:none;z-index:-1;opacity:0.05;
+  border:1px solid rgba(255,255,255,.35);border-radius:50%;}
+.float-shape.square{border-radius:3px;}
+.float-shape.triangle{clip-path:polygon(50% 0%,0% 100%,100% 100%);border-radius:0;}
 
 /* ---------- NAV ---------- */
 nav{position:fixed;top:0;left:0;width:100%;z-index:100;
@@ -70,11 +101,23 @@ nav{position:fixed;top:0;left:0;width:100%;z-index:100;
   display:flex;justify-content:space-between;align-items:center;
   height:var(--nav-h);padding:0 clamp(16px,5vw,48px);}
 .logo{font-size:clamp(1.1rem,2.4vw,1.35rem);font-weight:800;letter-spacing:1px;cursor:pointer;
-  white-space:nowrap;flex-shrink:0;z-index:102;
+  white-space:nowrap;flex-shrink:0;z-index:302;
   background:linear-gradient(90deg,var(--cyan),var(--blue),var(--magenta));
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  transition:filter .15s;}
+.logo.glitch{animation:glitch .25s linear;}
+@keyframes glitch{
+  0%{transform:translate(0);filter:hue-rotate(0);}
+  20%{transform:translate(-2px,1px);filter:hue-rotate(90deg);}
+  40%{transform:translate(2px,-1px);filter:hue-rotate(-60deg);}
+  60%{transform:translate(-1px,-1px);filter:hue-rotate(180deg);}
+  80%{transform:translate(1px,2px);}
+  100%{transform:translate(0);filter:hue-rotate(0);}
+}
+
+/* desktop nav links */
 .nav-links{position:fixed;top:0;right:clamp(16px,5vw,48px);height:var(--nav-h);
-  display:flex;gap:clamp(16px,2.6vw,34px);align-items:center;z-index:101;}
+  display:flex;gap:clamp(16px,2.6vw,34px);align-items:center;z-index:301;}
 .nav-links a{color:var(--muted);text-decoration:none;font-weight:500;font-size:.92rem;
   cursor:pointer;position:relative;padding:6px 2px;transition:color .25s;white-space:nowrap;}
 .nav-links a::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;
@@ -82,14 +125,39 @@ nav{position:fixed;top:0;left:0;width:100%;z-index:100;
 .nav-links a:hover,.nav-links a.active{color:var(--text);}
 .nav-links a:hover::after,.nav-links a.active::after{width:100%;}
 
-/* hamburger (hidden on wide screens) */
 #hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;
-  width:42px;height:42px;background:none;border:none;cursor:pointer;z-index:102;padding:8px;}
+  width:42px;height:42px;background:none;border:none;cursor:pointer;z-index:302;padding:8px;}
 #hamburger span{display:block;height:2px;width:24px;border-radius:2px;background:var(--text);
   transition:transform .3s,opacity .3s;}
 body.menu-open #hamburger span:nth-child(1){transform:translateY(7px) rotate(45deg);}
 body.menu-open #hamburger span:nth-child(2){opacity:0;}
 body.menu-open #hamburger span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+/* ---------- MOBILE MENU OVERLAY ---------- */
+.mobile-menu-bg{position:fixed;inset:0;z-index:199;
+  background:rgba(2,3,8,0.96);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
+  opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;}
+body.menu-open .mobile-menu-bg{opacity:1;visibility:visible;}
+.mobile-menu-bg a{font-size:1.5rem;font-weight:600;color:var(--muted);text-decoration:none;
+  padding:16px 32px;letter-spacing:2px;position:relative;transition:color .3s;
+  opacity:0;transform:translateY(20px);
+  transition:color .3s,opacity .4s,transform .4s;}
+body.menu-open .mobile-menu-bg a{opacity:1;transform:translateY(0);}
+body.menu-open .mobile-menu-bg a:nth-child(1){transition-delay:0.05s;}
+body.menu-open .mobile-menu-bg a:nth-child(2){transition-delay:0.10s;}
+body.menu-open .mobile-menu-bg a:nth-child(3){transition-delay:0.15s;}
+body.menu-open .mobile-menu-bg a:nth-child(4){transition-delay:0.20s;}
+body.menu-open .mobile-menu-bg a:nth-child(5){transition-delay:0.25s;}
+body.menu-open .mobile-menu-bg a:nth-child(6){transition-delay:0.30s;}
+.mobile-menu-bg a::after{content:"";position:absolute;bottom:8px;left:50%;width:0;height:1.5px;
+  background:linear-gradient(90deg,var(--cyan),var(--magenta));transition:width .35s;
+  transform:translateX(-50%);border-radius:2px;}
+.mobile-menu-bg a:hover,.mobile-menu-bg a.active{color:var(--text);}
+.mobile-menu-bg a:hover::after,.mobile-menu-bg a.active::after{width:50%;}
+.mobile-menu-bg .menu-decoration{position:absolute;top:30px;left:50%;transform:translateX(-50%);
+  width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.mobile-menu-bg .menu-decoration.bottom{top:auto;bottom:30px;}
 
 /* ---------- LAYOUT ---------- */
 main{margin-top:var(--nav-h);position:relative;
@@ -97,14 +165,15 @@ main{margin-top:var(--nav-h);position:relative;
   display:flex;flex-direction:column;}
 .page{display:none;max-width:1150px;margin:0 auto;
   padding:clamp(40px,8vw,90px) clamp(20px,5vw,40px) 60px;
-  animation:fade .6s ease;}
+  animation:fadeIn .6s ease;}
 .page.active{display:block;flex:1 0 auto;width:100%;}
-@keyframes fade{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
 
-h1{font-size:clamp(2.4rem,7vw,4.6rem);line-height:1.05;margin-bottom:22px;font-weight:800;
-  letter-spacing:-1px;}
+h1{font-size:clamp(2.4rem,7vw,4.6rem);line-height:1.05;margin-bottom:22px;font-weight:800;letter-spacing:-1px;}
 .grad{background:linear-gradient(110deg,var(--cyan),var(--blue) 50%,var(--magenta));
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  animation:gradShift 8s ease-in-out infinite;}
+@keyframes gradShift{0%,100%{filter:hue-rotate(0);}50%{filter:hue-rotate(12deg);}}
 h2{font-size:clamp(1.9rem,5vw,2.9rem);margin-bottom:24px;font-weight:700;letter-spacing:-.5px;}
 .eyebrow{display:inline-block;font-size:.78rem;letter-spacing:3px;text-transform:uppercase;
   color:var(--cyan);margin-bottom:18px;font-weight:700;opacity:.9;}
@@ -115,23 +184,36 @@ p.lead{font-size:clamp(1rem,2.2vw,1.2rem);color:var(--muted);max-width:680px;mar
 .card{position:relative;background:var(--card);backdrop-filter:blur(14px);
   -webkit-backdrop-filter:blur(14px);border-radius:18px;padding:clamp(22px,4vw,30px);
   border:1px solid var(--line);overflow:hidden;
-  transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s,box-shadow .35s;}
+  transition:transform .15s ease-out,border-color .35s,box-shadow .35s;
+  transform-style:preserve-3d;will-change:transform;}
 .card .icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;
   justify-content:center;font-size:1.3rem;margin-bottom:16px;
   background:linear-gradient(135deg,rgba(95,233,255,.18),rgba(255,95,168,.18));
   border:1px solid var(--line);}
 .card h3{font-size:1.2rem;margin-bottom:10px;font-weight:700;}
 .card p{color:var(--muted);font-size:.94rem;}
-.card:hover{transform:translateY(-6px);border-color:rgba(95,233,255,.45);
-  box-shadow:0 20px 50px rgba(58,123,255,.18);}
+.card .glow-line{position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0;
+  transition:opacity .35s;}
+.card:hover{border-color:rgba(95,233,255,.45);box-shadow:0 20px 50px rgba(58,123,255,.18);}
+.card:hover .glow-line{opacity:1;}
 .card.wide{grid-column:1/-1;}
+.card.reveal{opacity:0;transform:translateY(30px);}
+.card.reveal.visible{opacity:1;transform:translateY(0);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1);}
 
 /* ---------- BUTTON ---------- */
 .btn{display:inline-block;padding:15px 34px;border:none;border-radius:40px;cursor:pointer;
   font-weight:800;font-size:1rem;color:#03040a;text-decoration:none;
   background:linear-gradient(90deg,var(--cyan),var(--blue));
-  transition:transform .2s,box-shadow .3s;}
+  transition:transform .2s,box-shadow .3s;position:relative;overflow:hidden;
+  user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;}
+.btn::after{content:"";position:absolute;inset:0;border-radius:40px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);
+  transform:translateX(-100%);transition:transform .5s;}
+.btn:hover::after{transform:translateX(100%);}
 .btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 0 30px rgba(95,233,255,.5);}
+.btn.struck{background:linear-gradient(90deg,#fff,var(--cyan));box-shadow:0 0 50px rgba(95,233,255,.9),0 0 80px rgba(255,95,168,.5);}
+.btn.struck::after{display:none;}
 
 /* ---------- CONTACT FORM ---------- */
 .contact-form{max-width:560px;display:flex;flex-direction:column;gap:16px;}
@@ -153,27 +235,18 @@ p.lead{font-size:clamp(1rem,2.2vw,1.2rem);color:var(--muted);max-width:680px;mar
 #secret-footer:active{color:var(--cyan);transform:scale(.95);}
 @keyframes pulse{from{opacity:.4;}to{opacity:.8;text-shadow:0 0 12px rgba(95,233,255,.3);}}
 
-/* meteor that flies in and strikes the footer */
-.meteor{position:absolute;top:-300px;right:-300px;width:4px;height:90px;border-radius:2px;
+/* meteor */
+.meteor{position:absolute;top:-400px;right:-200px;width:3px;height:80px;border-radius:2px;
   background:linear-gradient(180deg,transparent,#5fe9ff,#fff);
-  box-shadow:0 0 18px 4px rgba(95,233,255,.9),0 0 40px 8px rgba(58,123,255,.5);
+  box-shadow:0 0 14px 3px rgba(95,233,255,.8),0 0 30px 6px rgba(58,123,255,.4);
   transform:rotate(45deg);pointer-events:none;z-index:50;
-  animation:meteor-fall .55s cubic-bezier(.55,.06,.68,.19) forwards;}
-@keyframes meteor-fall{
-  0%{top:-300px;right:-300px;opacity:0;}
-  10%{opacity:1;}
-  100%{top:50%;right:50%;opacity:1;}
-}
-/* impact flash + shockwave on hit */
+  animation:meteor-fall .5s cubic-bezier(.55,.06,.68,.19) forwards;}
+@keyframes meteor-fall{0%{top:-400px;right:-200px;opacity:0;}10%{opacity:1;}100%{top:50%;right:50%;opacity:1;}}
 .impact{position:absolute;top:50%;left:50%;width:10px;height:10px;border-radius:50%;
   transform:translate(-50%,-50%);pointer-events:none;z-index:49;
   background:radial-gradient(circle,#fff,#5fe9ff 40%,transparent 70%);
-  animation:impact-flash .6s ease-out forwards;}
-@keyframes impact-flash{
-  0%{width:10px;height:10px;opacity:1;}
-  100%{width:320px;height:320px;opacity:0;}
-}
-/* the revealed name */
+  animation:impact-flash .5s ease-out forwards;}
+@keyframes impact-flash{0%{width:10px;height:10px;opacity:1;}100%{width:280px;height:280px;opacity:0;}}
 #secret-footer.struck #footer-text{
   color:#fff;text-shadow:0 0 18px rgba(95,233,255,.9),0 0 40px rgba(255,95,168,.6);
   letter-spacing:2px;font-weight:800;animation:none;}
@@ -190,33 +263,48 @@ body.bang #big-bang{opacity:1;}
 body.bang #mudhu{opacity:1;transform:scale(1) translateY(0);}
 body.bang-out #big-bang{opacity:0;transition-duration:3s;}
 
-/* ---------- MOBILE / NARROW ---------- */
+/* ---------- CLASSIFIED ---------- */
+#classified{display:none;}
+#classified.active{display:block;}
+.classified-content{max-width:700px;margin:0 auto;text-align:center;padding:40px 20px;}
+.classified-content h2{font-family:'Courier New',monospace;color:var(--cyan);text-shadow:0 0 20px rgba(95,233,255,.7);}
+.classified-stamp{display:inline-block;border:3px solid var(--magenta);color:var(--magenta);
+  padding:10px 30px;font-size:1.4rem;font-weight:900;letter-spacing:6px;text-transform:uppercase;
+  transform:rotate(-8deg);margin:20px 0;text-shadow:0 0 18px rgba(255,95,168,.6);
+  animation:stampPulse 2s infinite;}
+@keyframes stampPulse{0%,100%{box-shadow:0 0 10px rgba(255,95,168,.3);}50%{box-shadow:0 0 30px rgba(255,95,168,.7);}}
+#konami-toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);
+  background:rgba(10,14,28,.95);border:1px solid var(--cyan);color:var(--cyan);
+  padding:12px 24px;border-radius:30px;font-size:.85rem;font-weight:700;letter-spacing:2px;
+  z-index:10000;pointer-events:none;transition:transform .4s cubic-bezier(.175,.885,.32,1.275);
+  box-shadow:0 0 24px rgba(95,233,255,.3);}
+#konami-toast.show{transform:translateX(-50%) translateY(0);}
+
+#warp-overlay{position:fixed;inset:0;z-index:500;pointer-events:none;opacity:0;
+  background:radial-gradient(circle at center,transparent 0%,rgba(3,4,10,.95) 100%);
+  transition:opacity .5s;}
+#warp-overlay.active{opacity:1;}
+
+/* ---------- MOBILE ---------- */
 @media (max-width:820px){
+  body, body.show-cursor, body.show-cursor *{cursor:auto !important;}
+  #cursor-dot,#cursor-ring{display:none !important;}
   #hamburger{display:flex;}
-  .nav-links{position:fixed;top:0;left:0;right:auto;width:min(78vw,320px);height:100vh;height:100dvh;
-    flex-direction:column;align-items:flex-start;justify-content:center;gap:24px;
-    padding:80px 0 0 34px;z-index:200;
-    background:rgba(6,8,18,0.97);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
-    border-right:1px solid var(--line);box-shadow:8px 0 40px rgba(0,0,0,.5);
-    transform:translateX(-100%);transition:transform .35s cubic-bezier(.2,.8,.2,1);
-    pointer-events:none;}
-  body.menu-open .nav-links{transform:translateX(0);pointer-events:auto;}
-  .nav-links a{font-size:1.3rem;padding:10px 24px 10px 0;width:100%;}
+  /* hide desktop nav links, use mobile menu instead */
+  .nav-links{display:none !important;}
   .grid{grid-template-columns:1fr;}
-  #hamburger{z-index:201;}
-  /* dim backdrop behind the panel */
-  #nav-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:150;
-    opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s;}
-  body.menu-open #nav-overlay{opacity:1;visibility:visible;}
 }
 @media (prefers-reduced-motion:reduce){
   .cloud{animation:none;}
+  #cursor-dot,#cursor-ring{display:none !important;}
+  body, body *{cursor:auto !important;}
 }
 </style>
 </head>
 <body>
 
 <div class="sky">
+  <div class="galaxy-core"></div>
   <div class="cloud c1"></div>
   <div class="cloud c2"></div>
   <div class="cloud c3"></div>
@@ -225,35 +313,53 @@ body.bang-out #big-bang{opacity:0;transition-duration:3s;}
 <canvas id="stars"></canvas>
 
 <div id="big-bang"><h1 id="mudhu">Mudhu Bangara</h1></div>
+<div id="warp-overlay"></div>
+
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<div id="konami-toast">🔒 <span id="konami-msg"></span></div>
 
 <nav>
-  <div class="logo" onclick="navigate('home')">AtomicSoft.in</div>
+  <div class="logo" id="logo" onclick="navigate('home')">AtomicSoft.in</div>
+  <!-- desktop nav -->
+  <div class="nav-links" id="navLinks">
+    <a onclick="navigate('home')" class="active" data-target="home">Home</a>
+    <a onclick="navigate('about')" data-target="about">About</a>
+    <a onclick="navigate('divisions')" data-target="divisions">Divisions</a>
+    <a onclick="navigate('vision')" data-target="vision">Vision</a>
+    <a onclick="navigate('contact')" data-target="contact">Contact</a>
+    <a onclick="navigate('classified')" data-target="classified" style="display:none;" id="classified-nav">🛸</a>
+  </div>
   <button id="hamburger" aria-label="Menu" onclick="toggleMenu()">
     <span></span><span></span><span></span>
   </button>
 </nav>
-<div class="nav-links" id="navLinks">
-  <a onclick="navigate('home')" class="active" data-target="home">Home</a>
-  <a onclick="navigate('about')" data-target="about">About</a>
-  <a onclick="navigate('divisions')" data-target="divisions">Divisions</a>
-  <a onclick="navigate('vision')" data-target="vision">Vision</a>
-  <a onclick="navigate('contact')" data-target="contact">Contact</a>
+
+<!-- mobile menu overlay -->
+<div class="mobile-menu-bg" id="mobileMenuBg" onclick="closeMenu()">
+  <div class="menu-decoration"></div>
+  <a onclick="navigate('home');event.stopPropagation();" data-target="home" class="active">Home</a>
+  <a onclick="navigate('about');event.stopPropagation();" data-target="about">About</a>
+  <a onclick="navigate('divisions');event.stopPropagation();" data-target="divisions">Divisions</a>
+  <a onclick="navigate('vision');event.stopPropagation();" data-target="vision">Vision</a>
+  <a onclick="navigate('contact');event.stopPropagation();" data-target="contact">Contact</a>
+  <a onclick="navigate('classified');event.stopPropagation();" data-target="classified" style="display:none;" id="classified-nav-mob">🛸</a>
+  <div class="menu-decoration bottom"></div>
 </div>
-<div id="nav-overlay" onclick="closeMenu()"></div>
 
 <main>
   <section id="home" class="page active">
     <span class="eyebrow">Everything Connected</span>
     <h1>Engineering the<br><span class="grad">Fabric of Tomorrow.</span></h1>
     <p class="lead">From the deepest oceans to the farthest reaches of space. Software, hardware, biology, and intelligence unified under one absolute vision.</p>
-    <button class="btn" onclick="navigate('divisions')">Explore Our Sectors</button>
+    <button class="btn" id="explore-btn" onclick="navigate('divisions')">Explore Our Sectors</button>
   </section>
 
   <section id="about" class="page">
     <span class="eyebrow">Project Status</span>
     <h2>A Concept in Motion</h2>
     <div class="grid">
-      <div class="card wide">
+      <div class="card wide"><div class="glow-line"></div>
         <div class="icon">🛰️</div>
         <h3>Concept Demonstration</h3>
         <p>Welcome to the AtomicSoft.in development preview.</p><br>
@@ -268,12 +374,12 @@ body.bang-out #big-bang{opacity:0;transition-duration:3s;}
     <h2>Infinite Divisions</h2>
     <p class="lead">We don't do just one thing. We do everything. Synergy across disciplines is the key to universal progress.</p>
     <div class="grid">
-      <div class="card"><div class="icon">🧠</div><h3>Artificial Intelligence</h3><p>Building cognitive architectures and AGI frameworks to solve humanity's most complex bottlenecks.</p></div>
-      <div class="card"><div class="icon">🚀</div><h3>Space Exploration</h3><p>Orbital logistics, propulsion software, and off-world habitat management systems.</p></div>
-      <div class="card"><div class="icon">🛡️</div><h3>Defense & Security</h3><p>Next-gen cybersecurity, autonomous tactical systems, and unbreachable encrypted networks.</p></div>
-      <div class="card"><div class="icon">🎮</div><h3>Hardware & Gaming</h3><p>Quantum processing chips and ultra-high-fidelity engine architecture.</p></div>
-      <div class="card"><div class="icon">🧬</div><h3>Human Wellbeing</h3><p>Biometric tracking, genome-tailored wellness algorithms, and AI-driven healthcare diagnostics.</p></div>
-      <div class="card"><div class="icon">🕶️</div><h3>AR / VR / XR</h3><p>Constructing hyper-realistic digital overlays for industry, education, and entertainment.</p></div>
+      <div class="card"><div class="glow-line"></div><div class="icon">🧠</div><h3>Artificial Intelligence</h3><p>Building cognitive architectures and AGI frameworks to solve humanity's most complex bottlenecks.</p></div>
+      <div class="card"><div class="glow-line"></div><div class="icon">🚀</div><h3>Space Exploration</h3><p>Orbital logistics, propulsion software, and off-world habitat management systems.</p></div>
+      <div class="card"><div class="glow-line"></div><div class="icon">🛡️</div><h3>Defense & Security</h3><p>Next-gen cybersecurity, autonomous tactical systems, and unbreachable encrypted networks.</p></div>
+      <div class="card"><div class="glow-line"></div><div class="icon">🎮</div><h3>Hardware & Gaming</h3><p>Quantum processing chips and ultra-high-fidelity engine architecture.</p></div>
+      <div class="card"><div class="glow-line"></div><div class="icon">🧬</div><h3>Human Wellbeing</h3><p>Biometric tracking, genome-tailored wellness algorithms, and AI-driven healthcare diagnostics.</p></div>
+      <div class="card"><div class="glow-line"></div><div class="icon">🕶️</div><h3>AR / VR / XR</h3><p>Constructing hyper-realistic digital overlays for industry, education, and entertainment.</p></div>
     </div>
   </section>
 
@@ -282,7 +388,7 @@ body.bang-out #big-bang{opacity:0;transition-duration:3s;}
     <h2>The Atomic Theory</h2>
     <p class="lead">At AtomicSoft, algorithms used to map galaxies are optimized to restore coral reefs.</p>
     <div class="grid">
-      <div class="card wide">
+      <div class="card wide"><div class="glow-line"></div>
         <div class="icon">✦</div>
         <h3>The Convergence</h3>
         <p>By housing software development, hardware engineering, biological research, and spatial exploration under one domain, we eliminate silos. Data flows freely. A breakthrough in gaming rendering engines immediately enhances our AR defense simulations. A discovery in marine biodiversity monitoring scales up to inform human healthcare analytics. This is not just a company; it is an ecosystem of progress.</p>
@@ -294,7 +400,7 @@ body.bang-out #big-bang{opacity:0;transition-duration:3s;}
     <span class="eyebrow">Get in Touch</span>
     <h2>Initiate Connection</h2>
     <p class="lead">Whether you are a government entity, an independent researcher, or a consumer, the network is open.</p>
-    <form class="contact-form" onsubmit="event.preventDefault(); this.reset(); alert('Transmission Sent to AtomicSoft Servers.');">
+    <form class="contact-form" onsubmit="event.preventDefault();spawnRipple(event);this.reset();setTimeout(()=>alert('Transmission Sent to AtomicSoft Servers.'),300);">
       <div class="input-group"><input type="text" placeholder="Designation / Name" required></div>
       <div class="input-group"><input type="email" placeholder="Encrypted Email Address" required></div>
       <div class="input-group"><textarea rows="5" placeholder="State your objective..." required></textarea></div>
@@ -302,113 +408,534 @@ body.bang-out #big-bang{opacity:0;transition-duration:3s;}
     </form>
   </section>
 
+  <section id="classified" class="page">
+    <div class="classified-content">
+      <span class="eyebrow">🔒 TOP SECRET // ATOMICSOFT BLACK SITE</span>
+      <h2>CLASSIFIED DIVISION</h2>
+      <div class="classified-stamp">CONFIDENTIAL</div>
+      <p class="lead">You weren't supposed to find this. But since you did...</p>
+      <div class="grid">
+        <div class="card"><div class="glow-line"></div><div class="icon">🌀</div><h3>Quantum Entanglement</h3><p>Instantaneous communication across any distance. Latency is a myth.</p></div>
+        <div class="card"><div class="glow-line"></div><div class="icon">🕳️</div><h3>Singularity Core</h3><p>Harnessing infinite energy from the fabric of spacetime itself.</p></div>
+        <div class="card"><div class="glow-line"></div><div class="icon">👽</div><h3>Exo-Intelligence Liaison</h3><p>We don't just look for aliens. We have their number.</p></div>
+        <div class="card"><div class="glow-line"></div><div class="icon">⏳</div><h3>Chronodynamics</h3><p>Temporal mechanics division. Yesterday's problems solved tomorrow... or yesterday.</p></div>
+      </div>
+      <p style="color:var(--muted);margin-top:30px;font-size:.85rem;">Clearance Level: <span style="color:var(--magenta);">OMEGA-INFINITY</span> | This page self-destructs never because it's too cool.</p>
+    </div>
+  </section>
+
   <button id="secret-footer"><span id="footer-text">Made with ❤️ from India</span></button>
 </main>
 
 <script>
-function navigate(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  const link=document.querySelector(`.nav-links a[data-target="${id}"]`);
-  if(link)link.classList.add('active');
-  closeMenu();
-  window.scrollTo({top:0,behavior:'smooth'});
+/* ═══════════════════════════════════════════════════════
+   ATOMICSOFT.IN — GALACTIC INTERACTIVE ENGINE
+   ═══════════════════════════════════════════════════════ */
+
+// ─── DOM refs ───
+const logo = document.getElementById('logo');
+const cursorDot = document.getElementById('cursor-dot');
+const cursorRing = document.getElementById('cursor-ring');
+const warpOverlay = document.getElementById('warp-overlay');
+const konamiToast = document.getElementById('konami-toast');
+const konamiMsg = document.getElementById('konami-msg');
+const classifiedNav = document.getElementById('classified-nav');
+const classifiedNavMob = document.getElementById('classified-nav-mob');
+const exploreBtn = document.getElementById('explore-btn');
+const mobileMenuBg = document.getElementById('mobileMenuBg');
+const isMobile = window.innerWidth <= 820 || 'ontouchstart' in window;
+
+// ─── MOUSE TRACKING ───
+let mx = innerWidth/2, my = innerHeight/2;
+let dmx = mx, dmy = my;
+
+if (!isMobile) {
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  document.addEventListener('mouseover', e => {
+    const t = e.target.closest('a,button,.btn,#secret-footer,.card,input,textarea');
+    if (t) { cursorDot.classList.add('hover'); cursorRing.classList.add('hover'); }
+    else { cursorDot.classList.remove('hover'); cursorRing.classList.remove('hover'); }
+  });
+  document.addEventListener('mouseout', e => {
+    if (!e.target.closest('a,button,.btn,#secret-footer,.card,input,textarea')) {
+      cursorDot.classList.remove('hover'); cursorRing.classList.remove('hover');
+    }
+  });
 }
-function toggleMenu(){document.body.classList.toggle('menu-open');}
-function closeMenu(){document.body.classList.remove('menu-open');}
 
-/* ---------- 3D STAR FIELD ---------- */
-const cv=document.getElementById('stars'),x=cv.getContext('2d');
-let W,H,cx,cy,stars=[];
-const N=window.innerWidth<900?900:2200, FOV=320, base=0.45;
-let speed=base,bang=false;
-const cols=['255,255,255','210,235,255','190,255,255','255,225,200','255,200,235'];
-function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight;cx=W/2;cy=H/2;}
-addEventListener('resize',resize);resize();
-class S{constructor(){this.r(true);}
-  r(rz){this.x=(Math.random()-.5)*W*3;this.y=(Math.random()-.5)*H*3;
-    this.z=rz?Math.random()*1800:1800;this.pz=this.z;
-    this.s=Math.random()*1.4+.5;this.o=Math.random()*.6+.4;
-    this.c=cols[Math.floor(Math.random()*cols.length)];}
-  u(sp){this.pz=this.z;this.z-=sp;if(this.z<=0)this.r(false);}
-  d(){const k=FOV/this.z,px=this.x*k+cx,py=this.y*k+cy;
-    if(px<-40||px>W+40||py<-40||py>H+40)return;
-    const o=Math.min(1,(1800-this.z)/450)*this.o;
-    const sz=Math.max(.9,Math.min(2.4,this.s*k));
-    if(bang&&speed>5){const pk=FOV/this.pz;
-      x.beginPath();x.moveTo(this.x*pk+cx,this.y*pk+cy);x.lineTo(px,py);
-      x.strokeStyle=`rgba(${this.c},${o})`;x.lineWidth=sz;x.stroke();}
-    else{x.fillStyle=`rgba(${this.c},${o})`;x.fillRect(px,py,sz,sz);}}}
-for(let i=0;i<N;i++)stars.push(new S());
-function loop(){x.clearRect(0,0,W,H);
-  stars.sort((a,b)=>b.z-a.z);
-  for(const s of stars){s.u(speed);s.d();}
-  requestAnimationFrame(loop);}
-loop();
+// ─── CANVAS & STARFIELD ───
+const cv = document.getElementById('stars'), ctx = cv.getContext('2d');
+let W, H, cx, cy;
 
-/* ---------- FOOTER: 5-TAP BIG BANG + LONG-PRESS METEOR ---------- */
-const f=document.getElementById('secret-footer');
-const ftext=document.getElementById('footer-text');
-let taps=[],pressTimer=null,longFired=false,meteorBusy=false;
+function resize() {
+  W = cv.width = innerWidth; H = cv.height = innerHeight; cx = W/2; cy = H/2;
+}
+addEventListener('resize', resize); resize();
 
-function startPress(e){
+const starCols = ['255,255,255','215,235,255','200,240,255','255,230,210','235,210,245'];
+const N = isMobile ? 450 : 1000;
+const FOV = 320;
+let speed = 0.45;
+let bang = false;
+let stars = [];
+
+// helper: gaussian-like distribution (center-weighted)
+function centerRand(range) {
+  return ((Math.random() + Math.random() + Math.random()) / 3 - 0.5) * range * 2;
+}
+
+class Star {
+  constructor(resetZ) { this.reset(resetZ); }
+  reset(resetZ) {
+    // center-weighted distribution for galaxy center feel
+    this.x = centerRand(W * 2.2);
+    this.y = centerRand(H * 2.2);
+    this.z = resetZ ? Math.random() * 1800 : 1800;
+    this.pz = this.z;
+    this.s = Math.random() * 1.3 + 0.4;
+    this.o = Math.random() * 0.5 + 0.3;
+    this.c = starCols[Math.floor(Math.random() * starCols.length)];
+    this.twinkle = Math.random() * Math.PI * 2;
+    this.twinkleSpeed = 0.01 + Math.random() * 0.03;
+    // inner stars glow slightly warmer (closer to galactic core color)
+    const distFromCenter = Math.hypot(this.x / (W*2.2), this.y / (H*2.2));
+    if (distFromCenter < 0.25 && Math.random() < 0.5) this.c = '255,220,200';
+  }
+  update(sp) {
+    this.pz = this.z;
+    this.z -= sp;
+    this.twinkle += this.twinkleSpeed;
+    if (this.z <= 0) this.reset(false);
+  }
+  draw() {
+    const k = FOV / this.z;
+    const px = this.x * k + cx;
+    const py = this.y * k + cy;
+    if (px < -30 || px > W + 30 || py < -30 || py > H + 30) return;
+    const fade = Math.min(1, (1800 - this.z) / 400);
+    const o = fade * this.o * (0.75 + 0.25 * Math.sin(this.twinkle));
+    const sz = Math.max(0.5, Math.min(2.2, this.s * k));
+
+    if (bang && speed > 5) {
+      const pk = FOV / this.pz;
+      ctx.beginPath();
+      ctx.moveTo(this.x * pk + cx, this.y * pk + cy);
+      ctx.lineTo(px, py);
+      ctx.strokeStyle = `rgba(${this.c},${o})`;
+      ctx.lineWidth = sz;
+      ctx.stroke();
+    } else {
+      ctx.fillStyle = `rgba(${this.c},${o})`;
+      ctx.fillRect(px, py, sz, sz);
+    }
+  }
+}
+
+for (let i = 0; i < N; i++) stars.push(new Star());
+
+// ─── SHOOTING STARS ───
+let shootingStars = [];
+function spawnShootingStar() {
+  const angle = Math.random() * 0.6 + 0.2;
+  const startX = Math.random() * W * 1.2 - W * 0.1;
+  const startY = -20;
+  const len = 80 + Math.random() * 140;
+  const life = 40 + Math.random() * 50;
+  const vx = (3 + Math.random() * 5) * Math.cos(angle);
+  const vy = (3 + Math.random() * 5) * Math.sin(angle);
+  const trail = [];
+  shootingStars.push({ x: startX, y: startY, vx, vy, life, maxLife: life, len, trail });
+}
+function autoShootingStar() {
+  if (!bang && shootingStars.length < 2 && Math.random() < 0.012) spawnShootingStar();
+}
+
+// ─── CURSOR TRAIL (subtle stardust) ───
+let trailParticles = [];
+function spawnTrailParticle(x, y) {
+  trailParticles.push({
+    x, y,
+    vx: (Math.random() - 0.5) * 0.6,
+    vy: (Math.random() - 0.5) * 0.6,
+    life: 0.25 + Math.random() * 0.35,
+    maxLife: 0.25 + Math.random() * 0.35,
+    s: 0.2 + Math.random() * 0.6,
+  });
+}
+let trailTimer = 0;
+
+// ─── CLICK: subtle gravitational ripple + tiny particles ───
+let rippleParticles = [];
+function spawnRipple(e) {
+  const bx = e.clientX || e.touches?.[0]?.clientX || cx;
+  const by = e.clientY || e.touches?.[0]?.clientY || cy;
+  // subtle expanding ring
+  rippleParticles.push({ x: bx, y: by, life: 0.7, maxLife: 0.7, ring: true });
+  // few tiny stardust particles
+  for (let i = 0; i < (isMobile ? 4 : 7); i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const spd = 0.6 + Math.random() * 2;
+    rippleParticles.push({
+      x: bx, y: by,
+      vx: Math.cos(angle) * spd,
+      vy: Math.sin(angle) * spd,
+      life: 0.4 + Math.random() * 0.4,
+      maxLife: 0.4 + Math.random() * 0.4,
+      s: 0.3 + Math.random() * 0.8,
+    });
+  }
+}
+document.addEventListener('click', e => { if (!bang && !e.target.closest('#secret-footer')) spawnRipple(e); });
+
+// ─── BIG BANG PARTICLES ───
+let bangParticles = [];
+const BANG_COLORS = ['95,233,255','255,95,168','58,123,255','255,180,95','255,255,255','200,100,255'];
+function spawnBigBang() {
+  bangParticles = [];
+  const total = isMobile ? 200 : 400;
+  for (let i = 0; i < total; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const spd = 3 + Math.random() * 18;
+    const life = 1.5 + Math.random() * 3.5;
+    bangParticles.push({
+      x: cx, y: cy,
+      vx: Math.cos(angle) * spd,
+      vy: Math.sin(angle) * spd,
+      life, maxLife: life,
+      s: 0.5 + Math.random() * 4,
+      hue: BANG_COLORS[Math.floor(Math.random() * BANG_COLORS.length)]
+    });
+  }
+}
+
+// ─── RENDER ───
+function drawParticleArray(arr, dt, color) {
+  for (let i = arr.length - 1; i >= 0; i--) {
+    const p = arr[i];
+    p.life -= dt;
+    if (p.life <= 0) { arr.splice(i, 1); continue; }
+    p.x += p.vx * dt * 60;
+    p.y += p.vy * dt * 60;
+    if (p.vx !== undefined) { p.vx *= 0.96; p.vy *= 0.96; }
+    const alpha = p.life / p.maxLife;
+    if (p.ring) {
+      const r = (1 - alpha) * 120;
+      ctx.strokeStyle = `rgba(95,233,255,${alpha * 0.5})`;
+      ctx.lineWidth = 1.5 * alpha;
+      ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI*2); ctx.stroke();
+    } else {
+      const c = p.hue || color || '200,225,255';
+      ctx.fillStyle = `rgba(${c},${alpha})`;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.s * alpha, 0, Math.PI*2); ctx.fill();
+    }
+  }
+}
+
+function drawShootingStars() {
+  for (let i = shootingStars.length - 1; i >= 0; i--) {
+    const ss = shootingStars[i];
+    ss.x += ss.vx; ss.y += ss.vy; ss.life--;
+    ss.trail.push({ x: ss.x, y: ss.y, life: 12 });
+    if (ss.life <= 0) { shootingStars.splice(i, 1); continue; }
+    for (let j = ss.trail.length - 1; j >= 0; j--) {
+      ss.trail[j].life--;
+      if (ss.trail[j].life <= 0) { ss.trail.splice(j, 1); continue; }
+      const alpha = ss.trail[j].life / 12;
+      ctx.fillStyle = `rgba(255,255,255,${alpha * 0.7})`;
+      ctx.beginPath(); ctx.arc(ss.trail[j].x, ss.trail[j].y, 1 * alpha, 0, Math.PI*2); ctx.fill();
+    }
+    const headAlpha = Math.min(1, ss.life / 10);
+    const grad = ctx.createRadialGradient(ss.x, ss.y, 0, ss.x, ss.y, 24);
+    grad.addColorStop(0, `rgba(255,255,255,${headAlpha})`);
+    grad.addColorStop(0.3, `rgba(180,225,255,${headAlpha*0.5})`);
+    grad.addColorStop(1, 'rgba(95,233,255,0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath(); ctx.arc(ss.x, ss.y, 24, 0, Math.PI*2); ctx.fill();
+  }
+}
+
+let lastTime = performance.now();
+function loop(now) {
+  const dt = Math.min(0.1, (now - lastTime) / 1000);
+  lastTime = now;
+
+  ctx.clearRect(0, 0, W, H);
+
+  // stars
+  stars.sort((a, b) => b.z - a.z);
+  for (const s of stars) { s.update(speed); s.draw(); }
+
+  // shooting stars
+  autoShootingStar();
+  drawShootingStars();
+
+  // cursor stardust
+  if (!isMobile && !bang) {
+    trailTimer += dt;
+    if (trailTimer > 0.06) {
+      spawnTrailParticle(mx, my);
+      trailTimer = 0;
+    }
+  }
+  drawParticleArray(trailParticles, dt, '200,225,255');
+
+  // click ripples
+  drawParticleArray(rippleParticles, dt);
+
+  // big bang
+  if (bangParticles.length > 0) drawParticleArray(bangParticles, dt);
+
+  // cursor
+  if (!isMobile) {
+    dmx += (mx - dmx) * 0.25;
+    dmy += (my - dmy) * 0.25;
+    cursorDot.style.left = dmx + 'px';
+    cursorDot.style.top = dmy + 'px';
+    cursorRing.style.left = mx + 'px';
+    cursorRing.style.top = my + 'px';
+  }
+
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+// ─── FLOATING SHAPES ───
+(function createFloatShapes() {
+  const container = document.querySelector('.sky');
+  const shapes = [
+    { cls: '', w: 100, h: 100, x: 15, y: 35, dx: 0.25, dy: 0.15, rot: 0.25, delay: 0 },
+    { cls: '', w: 70, h: 70, x: 75, y: 20, dx: -0.2, dy: 0.3, rot: -0.35, delay: 2 },
+    { cls: 'square', w: 50, h: 50, x: 55, y: 70, dx: 0.15, dy: -0.25, rot: 0.4, delay: 4 },
+    { cls: 'triangle', w: 80, h: 80, x: 20, y: 60, dx: -0.3, dy: -0.15, rot: -0.2, delay: 1 },
+    { cls: '', w: 45, h: 45, x: 80, y: 55, dx: 0.1, dy: 0.35, rot: 0.5, delay: 3 },
+  ];
+  shapes.forEach(s => {
+    const el = document.createElement('div');
+    el.className = 'float-shape ' + s.cls;
+    el.style.cssText = `width:${s.w}px;height:${s.h}px;left:${s.x}%;top:${s.y}%;`;
+    el.style.animation = `floatShape${s.delay} ${22 + Math.random()*12}s linear infinite`;
+    el.style.animationDelay = s.delay + 's';
+    const kf = `
+      @keyframes floatShape${s.delay} {
+        0%{transform:translate(0,0) rotate(0deg);opacity:0.03;}
+        25%{transform:translate(${s.dx*70}px,${s.dy*70}px) rotate(${s.rot*90}deg);opacity:0.07;}
+        50%{transform:translate(${-s.dx*50}px,${-s.dy*40}px) rotate(${s.rot*180}deg);opacity:0.04;}
+        75%{transform:translate(${s.dy*60}px,${-s.dx*60}px) rotate(${s.rot*270}deg);opacity:0.06;}
+        100%{transform:translate(0,0) rotate(${s.rot*360}deg);opacity:0.03;}
+      }
+    `;
+    const styleEl = document.createElement('style');
+    styleEl.textContent = kf;
+    document.head.appendChild(styleEl);
+    container.appendChild(el);
+  });
+})();
+
+// ─── CARD 3D TILT ───
+if (!isMobile) {
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform = `rotateY(${x*7}deg) rotateX(${-y*7}deg) translateY(-6px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'rotateY(0deg) rotateX(0deg) translateY(0px)';
+    });
+  });
+}
+
+// ─── SCROLL REVEAL ───
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.card').forEach(card => {
+  card.classList.add('reveal', 'reveal-initialized');
+  revealObserver.observe(card);
+});
+
+// ─── GLITCH LOGO ───
+let glitchTimer = null;
+function glitchLogo() {
+  logo.classList.add('glitch');
+  setTimeout(() => logo.classList.remove('glitch'), 250);
+  scheduleGlitch();
+}
+function scheduleGlitch() {
+  clearTimeout(glitchTimer);
+  glitchTimer = setTimeout(glitchLogo, 8000 + Math.random() * 15000);
+}
+scheduleGlitch();
+logo.addEventListener('mouseenter', () => { clearTimeout(glitchTimer); glitchLogo(); });
+logo.addEventListener('mouseleave', scheduleGlitch);
+
+// ─── KONAMI CODE ───
+const konamiSeq = [38,38,40,40,37,39,37,39,66,65];
+let konamiIdx = 0;
+let classifiedUnlocked = false;
+document.addEventListener('keydown', e => {
+  if (e.keyCode === konamiSeq[konamiIdx]) {
+    konamiIdx++;
+    if (konamiIdx === konamiSeq.length) { konamiIdx = 0; unlockClassified(); }
+  } else {
+    konamiIdx = (e.keyCode === 38) ? 1 : 0;
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey && e.shiftKey && e.key === 'K') { e.preventDefault(); unlockClassified(); }
+});
+
+function unlockClassified() {
+  if (classifiedUnlocked) return;
+  classifiedUnlocked = true;
+  classifiedNav.style.display = '';
+  if (classifiedNavMob) classifiedNavMob.style.display = '';
+  showKonamiToast('CLASSIFIED ACCESS GRANTED');
+  spawnRipple({ clientX: cx, clientY: cy });
+}
+function showKonamiToast(msg) {
+  konamiMsg.textContent = msg;
+  konamiToast.classList.add('show');
+  setTimeout(() => konamiToast.classList.remove('show'), 2500);
+}
+
+// ─── NAVIGATION ───
+function navigate(id) {
+  if (id === 'classified' && !classifiedUnlocked) {
+    showKonamiToast('ACCESS DENIED — CLEARANCE REQUIRED');
+    return;
+  }
+  warpOverlay.classList.add('active');
+  setTimeout(() => {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    // desktop nav
+    document.querySelectorAll('#navLinks a').forEach(a => a.classList.remove('active'));
+    document.querySelectorAll('#mobileMenuBg a').forEach(a => a.classList.remove('active'));
+    const section = document.getElementById(id);
+    if (section) section.classList.add('active');
+    document.querySelectorAll(`a[data-target="${id}"]`).forEach(a => a.classList.add('active'));
+    closeMenu();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    warpOverlay.classList.remove('active');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        document.querySelectorAll('#' + id + ' .card.reveal').forEach(c => {
+          const rect = c.getBoundingClientRect();
+          if (rect.top < window.innerHeight && rect.bottom > 0) c.classList.add('visible');
+          revealObserver.observe(c);
+        });
+      });
+    });
+  }, 280);
+}
+function toggleMenu() { document.body.classList.toggle('menu-open'); }
+function closeMenu() { document.body.classList.remove('menu-open'); }
+
+// ─── BUTTON: LONG-PRESS METEOR (was on footer, now on Explore button) ───
+let btnPressTimer = null, btnLongFired = false, btnMeteorBusy = false;
+let btnOriginalText = '';
+
+function btnStartPress(e) {
   e.preventDefault();
-  if(bang||meteorBusy)return;
-  longFired=false;
-  pressTimer=setTimeout(()=>{longFired=true;meteorStrike();},600);
+  if (bang || btnMeteorBusy) return;
+  btnLongFired = false;
+  btnOriginalText = exploreBtn.textContent;
+  btnPressTimer = setTimeout(() => { btnLongFired = true; btnMeteorStrike(); }, 600);
 }
-function endPress(e){
+function btnEndPress(e) {
   e.preventDefault();
-  clearTimeout(pressTimer);
-  if(bang||meteorBusy)return;
-  if(longFired){longFired=false;return;}   // long press already handled; don't count as tap
-  registerTap();
+  clearTimeout(btnPressTimer);
+  if (bang || btnMeteorBusy) return;
+  if (btnLongFired) { btnLongFired = false; return; }
+  // normal click behavior (navigate)
+  navigate('divisions');
 }
-function cancelPress(){clearTimeout(pressTimer);longFired=false;}
+function btnCancelPress() { clearTimeout(btnPressTimer); btnLongFired = false; }
 
-function registerTap(){
-  const now=Date.now();taps=taps.filter(t=>now-t<=2000);taps.push(now);
-  f.style.color='var(--cyan)';setTimeout(()=>{if(!bang)f.style.color='';},150);
-  if(taps.length>=5){fire();taps=[];}
-}
-
-function meteorStrike(){
-  meteorBusy=true;
-  const meteor=document.createElement('div');meteor.className='meteor';
-  f.appendChild(meteor);
-  // impact + name reveal once the meteor lands (~550ms)
-  setTimeout(()=>{
-    const flash=document.createElement('div');flash.className='impact';
-    f.appendChild(flash);
-    f.classList.add('struck');
-    ftext.textContent='Ravichandu S';
+function btnMeteorStrike() {
+  btnMeteorBusy = true;
+  const meteor = document.createElement('div'); meteor.className = 'meteor';
+  exploreBtn.appendChild(meteor);
+  setTimeout(() => {
+    const flash = document.createElement('div'); flash.className = 'impact';
+    exploreBtn.appendChild(flash);
+    exploreBtn.classList.add('struck');
+    exploreBtn.textContent = 'Ravichandu S';
+    const rect = exploreBtn.getBoundingClientRect();
+    spawnRipple({ clientX: rect.left + rect.width/2, clientY: rect.top + rect.height/2 });
     meteor.remove();
-    setTimeout(()=>flash.remove(),600);
-  },540);
-  // reset back to original after a beat
-  setTimeout(()=>{
-    f.classList.remove('struck');
-    ftext.textContent='Made with ❤️ from India';
-    meteorBusy=false;
-  },2600);
+    setTimeout(() => flash.remove(), 500);
+  }, 490);
+  setTimeout(() => {
+    exploreBtn.classList.remove('struck');
+    exploreBtn.textContent = btnOriginalText || 'Explore Our Sectors';
+    btnMeteorBusy = false;
+  }, 2600);
 }
 
-f.addEventListener('mousedown',startPress);
-f.addEventListener('mouseup',endPress);
-f.addEventListener('mouseleave',cancelPress);
-f.addEventListener('touchstart',startPress,{passive:false});
-f.addEventListener('touchend',endPress,{passive:false});
-f.addEventListener('touchcancel',cancelPress);
-f.addEventListener('contextmenu',e=>e.preventDefault()); // block long-press menu on mobile
+exploreBtn.addEventListener('mousedown', btnStartPress);
+exploreBtn.addEventListener('mouseup', btnEndPress);
+exploreBtn.addEventListener('mouseleave', btnCancelPress);
+exploreBtn.addEventListener('touchstart', btnStartPress, { passive: false });
+exploreBtn.addEventListener('touchend', btnEndPress, { passive: false });
+exploreBtn.addEventListener('touchcancel', btnCancelPress);
+exploreBtn.addEventListener('contextmenu', e => e.preventDefault());
 
-function fire(){bang=true;document.body.classList.add('warp');
-  let wi=setInterval(()=>{speed*=1.4;if(speed>300)clearInterval(wi);},50);
-  setTimeout(()=>{document.body.classList.add('bang');speed=.1;},1200);
-  setTimeout(()=>{document.body.classList.remove('bang');document.body.classList.add('bang-out');
-    let ri=setInterval(()=>{speed+=(base-speed)*.1;
-      if(Math.abs(speed-base)<.1){speed=base;clearInterval(ri);}},50);},4500);
-  setTimeout(()=>{document.body.classList.remove('bang-out');document.body.classList.remove('warp');bang=false;},7500);}
+// ─── FOOTER: 5-TAP BIG BANG (no more long-press) ───
+const f = document.getElementById('secret-footer');
+const ftext = document.getElementById('footer-text');
+let taps = [];
+
+f.addEventListener('click', () => {
+  const now = Date.now(); taps = taps.filter(t => now - t <= 2000); taps.push(now);
+  f.style.color = 'var(--cyan)'; setTimeout(() => { if (!bang) f.style.color = ''; }, 150);
+  if (taps.length >= 5) { fire(); taps = []; }
+});
+f.addEventListener('contextmenu', e => e.preventDefault());
+
+function fire() {
+  bang = true;
+  document.body.classList.add('warp');
+  spawnBigBang();
+  let wi = setInterval(() => { speed *= 1.4; if (speed > 300) clearInterval(wi); }, 50);
+  setTimeout(() => { document.body.classList.add('bang'); speed = 0.1; }, 1200);
+  setTimeout(() => {
+    document.body.classList.remove('bang');
+    document.body.classList.add('bang-out');
+    let ri = setInterval(() => {
+      speed += (0.45 - speed) * 0.1;
+      if (Math.abs(speed - 0.45) < 0.1) { speed = 0.45; clearInterval(ri); }
+    }, 50);
+  }, 4500);
+  setTimeout(() => {
+    document.body.classList.remove('bang-out');
+    document.body.classList.remove('warp');
+    bang = false;
+  }, 7500);
+}
+
+// ─── MOUSE PARALLAX ON NEBULA ───
+const skyEl = document.querySelector('.sky');
+const coreEl = document.querySelector('.galaxy-core');
+if (!isMobile) {
+  document.addEventListener('mousemove', e => {
+    const px = (e.clientX / W - 0.5) * 6;
+    const py = (e.clientY / H - 0.5) * 4;
+    skyEl.style.transform = `translate(${px}px, ${py}px)`;
+    if (coreEl) coreEl.style.transform = `translate(calc(-50% + ${-px*0.3}px), calc(-50% + ${-py*0.3}px))`;
+  });
+}
+
+// ─── INIT ───
+if (isMobile) document.body.classList.add('show-cursor');
+addEventListener('resize', () => { stars.forEach(s => s.reset(true)); });
+document.querySelectorAll('button,.btn').forEach(el => {
+  el.addEventListener('touchstart', function(e) {
+    if (e.target.closest('#secret-footer')) return;
+    e.preventDefault(); this.click();
+  }, { passive: false });
+});
 </script>
 </body>
 </html>
