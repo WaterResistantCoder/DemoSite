@@ -15,7 +15,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
 :root{
@@ -58,7 +58,7 @@ a{color:inherit;}
 .top-inner{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;
   gap:12px;padding:12px clamp(16px,5vw,28px);min-height:var(--nav-h);}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);
-  font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:clamp(1.1rem,3.5vw,1.3rem);letter-spacing:-.2px;}
+  font-family:'Dancing Script',cursive;font-weight:700;font-size:clamp(1.25rem,3.5vw,1.5rem);letter-spacing:.5px;}
 .brand .ball{width:26px;height:26px;flex-shrink:0;}
 .brand .accent{color:var(--yarn);font-style:italic;}
 .top-actions{display:flex;align-items:center;gap:8px;}
@@ -77,8 +77,8 @@ a{color:inherit;}
   animation:rise .7s cubic-bezier(.2,.8,.2,1);}
 .hero .eyebrow{display:inline-block;font-size:.74rem;letter-spacing:3px;text-transform:uppercase;
   color:var(--yarn);font-weight:600;margin-bottom:16px;}
-.hero h1{font-family:'Fraunces',Georgia,serif;font-weight:600;
-  font-size:clamp(2.4rem,9vw,4.2rem);line-height:1.02;letter-spacing:-1px;color:var(--ink);}
+.hero h1{font-family:'Dancing Script',cursive;font-weight:700;
+  font-size:clamp(2.6rem,9vw,4.6rem);line-height:1.05;letter-spacing:1px;color:var(--ink);}
 .hero h1 .accent{color:var(--yarn);font-style:italic;font-weight:500;}
 .hero p.tagline{color:var(--ink-soft);max-width:540px;margin:18px auto 0;font-size:clamp(1rem,2.4vw,1.12rem);}
 .hero .meta{margin-top:14px;color:var(--muted);font-size:.88rem;min-height:1.2em;}
@@ -91,11 +91,11 @@ a{color:inherit;}
 .collection{margin-bottom:54px;animation:rise .6s ease both;}
 .collection:last-child{margin-bottom:10px;}
 .col-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:18px;}
-.col-head h2{font-family:'Fraunces',Georgia,serif;font-weight:600;
-  font-size:clamp(1.35rem,4vw,1.9rem);color:var(--ink);letter-spacing:-.3px;}
+.col-head h2{font-family:'Dancing Script',cursive;font-weight:700;
+  font-size:clamp(1.5rem,4vw,2.1rem);color:var(--ink);letter-spacing:.5px;}
 .col-head .count{font-size:.76rem;font-weight:500;color:var(--ink-soft);
   background:var(--bg-2);border:1px solid var(--line);padding:3px 11px;border-radius:999px;}
-.col-head .num{font-family:'Fraunces',serif;color:var(--yarn);font-size:.9rem;font-weight:500;opacity:.7;}
+.col-head .num{font-family:'Dancing Script',cursive;color:var(--yarn);font-size:1.1rem;font-weight:600;opacity:.8;}
 
 /* masonry — preserves natural aspect ratio for portrait + landscape */
 .masonry{column-count:2;column-gap:var(--gap);}
@@ -129,7 +129,7 @@ a{color:inherit;}
 .state .spinner{width:38px;height:38px;border-radius:50%;border:3px solid var(--line);
   border-top-color:var(--yarn);margin:0 auto 18px;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.state h3{font-family:'Fraunces',serif;color:var(--ink);font-size:1.3rem;margin-bottom:8px;font-weight:600;}
+.state h3{font-family:'Dancing Script',cursive;color:var(--ink);font-size:1.6rem;margin-bottom:8px;font-weight:700;}
 .state p{max-width:420px;margin:0 auto;font-size:.95rem;}
 .state .hint{margin-top:18px;font-size:.82rem;color:var(--muted);background:var(--surface);
   border:1px solid var(--line);border-radius:12px;padding:14px 16px;text-align:left;max-width:480px;margin-left:auto;margin-right:auto;}
@@ -159,7 +159,7 @@ a{color:inherit;}
 .lb-prev:active,.lb-next:active{transform:translateY(-50%) scale(.92);}
 .lb-cap{position:absolute;bottom:max(16px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
   color:#fff;text-align:center;max-width:90vw;padding:0 10px;}
-.lb-cap .ctitle{font-family:'Fraunces',serif;font-size:1rem;font-weight:500;opacity:.95;}
+.lb-cap .ctitle{font-family:'Dancing Script',cursive;font-size:1.3rem;font-weight:600;opacity:.95;}
 .lb-cap .cpos{font-size:.78rem;opacity:.6;letter-spacing:1px;margin-top:2px;}
 
 /* ---------- FOOTER ---------- */
@@ -189,7 +189,7 @@ footer{border-top:1px solid var(--line);background:var(--surface);}
         <path d="M3.2 11.4c6.4 0 11 5.6 17.6 5.2M3 8.6c9.2 0 8.8 11.4 18 9.2M5 5.2c8 0 7.2 12.6 15.6 12.2"
               stroke="#fbf7f1" stroke-width="1.1" fill="none" opacity=".75" stroke-linecap="round"/>
       </svg>
-      <span>SpellSpun<span class="accent"> Threads</span></span>
+      <span class="accent">SpellSpunThreads</span>
     </a>
     <div class="top-actions">
       <button class="icon-btn" id="refreshBtn" title="Refresh gallery" aria-label="Refresh gallery">
@@ -206,7 +206,7 @@ footer{border-top:1px solid var(--line);background:var(--surface);}
 <main>
   <section class="hero">
     <span class="eyebrow">Handmade with love</span>
-    <h1>SpellSpun <span class="accent">Threads</span></h1>
+    <h1><span class="accent">SpellSpunThreads</span></h1>
     <p class="tagline" id="tagline">A little gallery of crochet, stitched one loop at a time.</p>
     <div class="meta" id="meta"></div>
     <svg class="chain" viewBox="0 0 280 14" preserveAspectRatio="none" aria-hidden="true">
