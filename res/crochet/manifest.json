@@ -1,0 +1,27 @@
+[
+  {
+    "dir": "1_StrawHat",
+    "order": 1,
+    "title": "Strawhat",
+    "images": [
+      "1.jpg",
+      "2.jpg"
+    ]
+  },
+  {
+    "dir": "2_Scrunchie",
+    "order": 2,
+    "title": "Scrunchie",
+    "images": [
+      "1.jpg"
+    ]
+  },
+  {
+    "dir": "3_MiniBag",
+    "order": 3,
+    "title": "Mini Bag",
+    "images": [
+      "1.jpg"
+    ]
+  }
+]

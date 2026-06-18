@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>SpellSpun Threads — Handmade Crochet</title>
+<meta name="description" content="A showcase of handmade crochet by SpellSpun Threads. Stitched with love, one piece at a time.">
+<meta name="theme-color" content="#fbf7f1">
+<link rel="canonical" href="https://atomicsoft.in/SpellSpunThreads/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="SpellSpun Threads — Handmade Crochet">
+<meta property="og:description" content="A showcase of handmade crochet, stitched with love.">
+<meta property="og:url" content="https://atomicsoft.in/SpellSpunThreads/">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#fbf7f1;
+  --bg-2:#f4ece0;
+  --surface:#ffffff;
+  --ink:#3b2f2a;
+  --ink-soft:#6b5d52;
+  --muted:#9a8b7e;
+  --line:#e9ddcd;
+  --yarn:#c97b54;
+  --yarn-2:#a67c52;
+  --sage:#7d9b76;
+  --shadow:0 10px 30px rgba(80,55,35,.12);
+  --shadow-lg:0 18px 50px rgba(80,55,35,.18);
+  --radius:18px;
+  --gap:14px;
+  --maxw:1180px;
+  --nav-h:60px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,sans-serif;
+  line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  background-image:
+    radial-gradient(80% 50% at 20% 0%,rgba(201,123,84,.07),transparent 60%),
+    radial-gradient(70% 50% at 90% 10%,rgba(125,155,118,.06),transparent 60%);
+  background-attachment:fixed;
+}
+img{max-width:100%;display:block;}
+button{font:inherit;color:inherit;cursor:pointer;border:none;background:none;}
+a{color:inherit;}
+
+/* ---------- TOP BAR ---------- */
+.top{position:sticky;top:0;z-index:50;
+  background:rgba(251,247,241,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);}
+.top-inner{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;
+  gap:12px;padding:12px clamp(16px,5vw,28px);min-height:var(--nav-h);}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);
+  font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:clamp(1.1rem,3.5vw,1.3rem);letter-spacing:-.2px;}
+.brand .ball{width:26px;height:26px;flex-shrink:0;}
+.brand .accent{color:var(--yarn);font-style:italic;}
+.top-actions{display:flex;align-items:center;gap:8px;}
+.icon-btn{width:40px;height:40px;border-radius:999px;border:1px solid var(--line);background:var(--surface);
+  display:flex;align-items:center;justify-content:center;color:var(--ink-soft);transition:.2s;}
+.icon-btn:hover{color:var(--yarn);border-color:var(--yarn);transform:rotate(90deg);}
+.icon-btn svg{width:18px;height:18px;}
+.home-link{display:inline-flex;align-items:center;gap:6px;text-decoration:none;font-size:.9rem;font-weight:500;
+  color:var(--ink-soft);border:1px solid var(--line);background:var(--surface);padding:9px 14px;border-radius:999px;
+  transition:.2s;white-space:nowrap;}
+.home-link:hover{color:var(--yarn);border-color:var(--yarn);transform:translateX(-2px);}
+.home-link svg{width:16px;height:16px;}
+
+/* ---------- HERO ---------- */
+.hero{max-width:var(--maxw);margin:0 auto;padding:clamp(40px,9vw,76px) 20px 10px;text-align:center;
+  animation:rise .7s cubic-bezier(.2,.8,.2,1);}
+.hero .eyebrow{display:inline-block;font-size:.74rem;letter-spacing:3px;text-transform:uppercase;
+  color:var(--yarn);font-weight:600;margin-bottom:16px;}
+.hero h1{font-family:'Fraunces',Georgia,serif;font-weight:600;
+  font-size:clamp(2.4rem,9vw,4.2rem);line-height:1.02;letter-spacing:-1px;color:var(--ink);}
+.hero h1 .accent{color:var(--yarn);font-style:italic;font-weight:500;}
+.hero p.tagline{color:var(--ink-soft);max-width:540px;margin:18px auto 0;font-size:clamp(1rem,2.4vw,1.12rem);}
+.hero .meta{margin-top:14px;color:var(--muted);font-size:.88rem;min-height:1.2em;}
+.hero .meta b{color:var(--yarn-2);font-weight:600;}
+.chain{display:block;width:min(280px,70vw);margin:26px auto 0;height:14px;color:var(--yarn);opacity:.7;}
+@keyframes rise{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:none;}}
+
+/* ---------- COLLECTIONS ---------- */
+.collections{max-width:var(--maxw);margin:0 auto;padding:14px clamp(16px,5vw,28px) 70px;}
+.collection{margin-bottom:54px;animation:rise .6s ease both;}
+.collection:last-child{margin-bottom:10px;}
+.col-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:18px;}
+.col-head h2{font-family:'Fraunces',Georgia,serif;font-weight:600;
+  font-size:clamp(1.35rem,4vw,1.9rem);color:var(--ink);letter-spacing:-.3px;}
+.col-head .count{font-size:.76rem;font-weight:500;color:var(--ink-soft);
+  background:var(--bg-2);border:1px solid var(--line);padding:3px 11px;border-radius:999px;}
+.col-head .num{font-family:'Fraunces',serif;color:var(--yarn);font-size:.9rem;font-weight:500;opacity:.7;}
+
+/* masonry — preserves natural aspect ratio for portrait + landscape */
+.masonry{column-count:2;column-gap:var(--gap);}
+@media (min-width:640px){.masonry{column-count:3;}}
+@media (min-width:1024px){.masonry{column-count:4;}}
+@media (min-width:1500px){.masonry{column-count:5;}}
+
+.tile{position:relative;break-inside:avoid;-webkit-column-break-inside:avoid;
+  margin-bottom:var(--gap);border-radius:var(--radius);overflow:hidden;
+  background:var(--bg-2);box-shadow:var(--shadow);cursor:zoom-in;
+  opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s cubic-bezier(.2,.8,.2,1);
+  will-change:opacity,transform;}
+.tile.in{opacity:1;transform:none;}
+.tile img{width:100%;height:auto;display:block;opacity:0;transition:opacity .45s ease,transform .5s ease;
+  background:linear-gradient(110deg,var(--bg-2),var(--bg),var(--bg-2));background-size:200% 100%;
+  animation:shimmer 1.4s linear infinite;}
+.tile img.loaded{opacity:1;animation:none;background:none;}
+.tile:hover img.loaded{transform:scale(1.04);}
+@keyframes shimmer{from{background-position:200% 0;}to{background-position:-200% 0;}}
+.tile .zoom-hint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:rgba(59,47,42,0);color:#fff;transition:background .25s;}
+.tile:hover .zoom-hint{background:rgba(59,47,42,.28);}
+.tile .zoom-hint svg{width:26px;height:26px;opacity:0;transform:scale(.8);transition:.25s;}
+.tile:hover .zoom-hint svg{opacity:1;transform:scale(1);}
+.tile.failed{cursor:default;min-height:120px;display:flex;align-items:center;justify-content:center;
+  color:var(--muted);font-size:.82rem;box-shadow:none;border:1px dashed var(--line);background:var(--surface);}
+.tile.failed::after{content:"couldn't load";}
+
+/* ---------- STATES ---------- */
+.state{text-align:center;padding:clamp(50px,12vw,90px) 20px;color:var(--muted);}
+.state .spinner{width:38px;height:38px;border-radius:50%;border:3px solid var(--line);
+  border-top-color:var(--yarn);margin:0 auto 18px;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.state h3{font-family:'Fraunces',serif;color:var(--ink);font-size:1.3rem;margin-bottom:8px;font-weight:600;}
+.state p{max-width:420px;margin:0 auto;font-size:.95rem;}
+.state .hint{margin-top:18px;font-size:.82rem;color:var(--muted);background:var(--surface);
+  border:1px solid var(--line);border-radius:12px;padding:14px 16px;text-align:left;max-width:480px;margin-left:auto;margin-right:auto;}
+.state .hint code{background:var(--bg-2);padding:2px 6px;border-radius:6px;font-size:.82rem;color:var(--yarn-2);}
+.hidden{display:none !important;}
+
+/* ---------- LIGHTBOX ---------- */
+.lb{position:fixed;inset:0;z-index:100;background:rgba(28,22,20,.94);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  display:none;align-items:center;justify-content:center;opacity:0;transition:opacity .25s;}
+.lb.open{display:flex;opacity:1;}
+.lb-stage{position:relative;max-width:96vw;max-height:90vh;display:flex;align-items:center;justify-content:center;}
+.lb img{max-width:96vw;max-height:90vh;object-fit:contain;border-radius:6px;
+  box-shadow:0 24px 70px rgba(0,0,0,.55);user-select:none;-webkit-user-drag:none;
+  transform:scale(.96);opacity:0;transition:opacity .3s,transform .3s;}
+.lb img.show{opacity:1;transform:none;}
+.lb-btn{position:absolute;z-index:2;display:flex;align-items:center;justify-content:center;
+  width:48px;height:48px;border-radius:999px;background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.22);color:#fff;backdrop-filter:blur(4px);
+  transition:background .2s,transform .15s;}
+.lb-btn:hover{background:rgba(255,255,255,.22);}
+.lb-btn:active{transform:scale(.92);}
+.lb-btn svg{width:22px;height:22px;}
+.lb-close{top:max(16px,env(safe-area-inset-top));right:max(16px,env(safe-area-inset-right));}
+.lb-prev{left:max(10px,env(safe-area-inset-left));top:50%;transform:translateY(-50%);}
+.lb-next{right:max(10px,env(safe-area-inset-right));top:50%;transform:translateY(-50%);}
+.lb-prev:active,.lb-next:active{transform:translateY(-50%) scale(.92);}
+.lb-cap{position:absolute;bottom:max(16px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
+  color:#fff;text-align:center;max-width:90vw;padding:0 10px;}
+.lb-cap .ctitle{font-family:'Fraunces',serif;font-size:1rem;font-weight:500;opacity:.95;}
+.lb-cap .cpos{font-size:.78rem;opacity:.6;letter-spacing:1px;margin-top:2px;}
+
+/* ---------- FOOTER ---------- */
+footer{border-top:1px solid var(--line);background:var(--surface);}
+.foot-inner{max-width:var(--maxw);margin:0 auto;padding:28px 20px;display:flex;
+  flex-direction:column;align-items:center;gap:8px;text-align:center;color:var(--muted);font-size:.85rem;}
+.foot-inner a{color:var(--yarn-2);text-decoration:none;font-weight:500;}
+.foot-inner a:hover{text-decoration:underline;}
+.foot-inner .heart{color:var(--yarn);}
+
+/* ---------- A11Y / MOTION ---------- */
+:focus-visible{outline:2px solid var(--yarn);outline-offset:3px;border-radius:6px;}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+  .tile{opacity:1;transform:none;}
+  html{scroll-behavior:auto;}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="index.html" aria-label="SpellSpun Threads home">
+      <svg class="ball" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="9.2" fill="var(--yarn)"/>
+        <path d="M3.2 11.4c6.4 0 11 5.6 17.6 5.2M3 8.6c9.2 0 8.8 11.4 18 9.2M5 5.2c8 0 7.2 12.6 15.6 12.2"
+              stroke="#fbf7f1" stroke-width="1.1" fill="none" opacity=".75" stroke-linecap="round"/>
+      </svg>
+      <span>SpellSpun<span class="accent"> Threads</span></span>
+    </a>
+    <div class="top-actions">
+      <button class="icon-btn" id="refreshBtn" title="Refresh gallery" aria-label="Refresh gallery">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+      </button>
+      <a class="home-link" href="../" aria-label="Back to AtomicSoft home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Home
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <span class="eyebrow">Handmade with love</span>
+    <h1>SpellSpun <span class="accent">Threads</span></h1>
+    <p class="tagline" id="tagline">A little gallery of crochet, stitched one loop at a time.</p>
+    <div class="meta" id="meta"></div>
+    <svg class="chain" viewBox="0 0 280 14" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 7 C14 0 28 0 42 7 C56 14 70 14 84 7 C98 0 112 0 126 7 C140 14 154 14 168 7 C182 0 196 0 210 7 C224 14 238 14 252 7 C266 0 280 0 280 7"
+            fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </svg>
+  </section>
+
+  <section class="collections" id="collections" aria-live="polite">
+    <div class="state" id="state">
+      <div class="spinner"></div>
+      <h3>Untangling the yarn…</h3>
+      <p>Loading the collection.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-inner">
+    <div>Hand-stitched with <span class="heart">&hearts;</span> · SpellSpun Threads</div>
+    <div><a href="../">atomicsoft.in</a></div>
+  </div>
+</footer>
+
+<!-- Lightbox -->
+<div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <button class="lb-btn lb-close" id="lbClose" aria-label="Close viewer">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+  </button>
+  <button class="lb-btn lb-prev" id="lbPrev" aria-label="Previous image">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <div class="lb-stage"><img id="lbImg" alt=""></div>
+  <button class="lb-btn lb-next" id="lbNext" aria-label="Next image">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+  </button>
+  <div class="lb-cap" id="lbCap"></div>
+</div>
+
+<noscript>
+  <div class="state"><h3>JavaScript needed</h3><p>This gallery needs JavaScript to load the photos.</p></div>
+</noscript>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   SPELLSPUN THREADS — static crochet gallery
+   Mobile-first · portrait + landscape · GitHub Pages friendly
+   ═══════════════════════════════════════════════════════════ */
+
+const CONFIG = {
+  repo: 'WaterResistantCoder/DemoSite',  // for GitHub API auto-discovery
+  branch: 'main',
+  basePath: '../res/crochet',                // browser-relative, used for <img src>
+  repoBasePath: 'res/crochet',               // repo-relative, used to match GitHub API tree paths
+  manifestPath: '../res/crochet/manifest.json',
+  cacheTTL: 1000 * 60 * 60,               // 1 hour for API results
+  cacheKey: 'sst_gallery_cache_v1',
+  artist: '',                             // e.g. 'by Ananya' — shown in hero if set
+  tagline: 'A little gallery of crochet, stitched one loop at a time.'
+};
+
+const IMG_EXT = ['jpg','jpeg','png','webp','gif','avif','bmp','heic','heif','svg','tiff','tif','phn'];
+
+/* ---------- helpers ---------- */
+const isImage = f => IMG_EXT.includes((f.split('.').pop() || '').toLowerCase());
+const leadNum = s => { const m = String(s).match(/^\s*(\d+)/); return m ? parseInt(m[1],10) : Infinity; };
+const titleCase = s => s.replace(/[_-]+/g,' ').replace(/\s+/g,' ').trim()
+  .replace(/\w\S*/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+const parseDir = dir => {
+  const m = String(dir).match(/^(\d+)_(.*)$/);
+  if (!m) return null;
+  return { order: parseInt(m[1],10), titleRaw: m[2] };
+};
+const joinUrl = (base, ...parts) => base.replace(/\/$/,'') + '/' + parts.map(p => encodeURIComponent(p)).join('/');
+
+function normalize(items){
+  if (!Array.isArray(items)) return [];
+  const out = [];
+  for (const it of items){
+    const dir = it.dir;
+    if (!dir) continue;
+    const parsed = parseDir(dir) || { order: typeof it.order === 'number' ? it.order : Infinity, titleRaw: it.title || dir };
+    const images = (it.images || [])
+      .filter(f => typeof f === 'string' && f)
+      .slice()
+      .sort((a,b) => (leadNum(a) - leadNum(b)) || a.localeCompare(b));
+    out.push({
+      dir,
+      order: parsed.order,
+      title: it.title && typeof it.title === 'string' ? it.title : titleCase(parsed.titleRaw) || dir,
+      images: images.map(f => ({ file: f, src: joinUrl(CONFIG.basePath, dir, f) }))
+    });
+  }
+  out.sort((a,b) => (a.order - b.order) || a.dir.localeCompare(b.dir));
+  return out;
+}
+
+/* ---------- data sources ---------- */
+async function loadViaManifest(){
+  const res = await fetch(CONFIG.manifestPath, { cache: 'no-cache' });
+  if (!res.ok) throw new Error('manifest ' + res.status);
+  const data = await res.json();
+  return normalize(data);
+}
+
+async function loadViaDirectoryListing(){
+  // Local dev: read the server's HTML directory listing (Python http.server,
+  // VS Code Live Server, `serve`, etc.). Sees uncommitted local files, so you
+  // can just drop images in and refresh. GitHub Pages returns 404 for folders,
+  // so this silently no-ops in production and the API takes over.
+  const res = await fetch(CONFIG.basePath + '/', { cache: 'no-cache' });
+  if (!res.ok) throw new Error('dir-listing ' + res.status);
+  const text = await res.text();
+  if (!text || !/<a\s+href/i.test(text)) throw new Error('no dir listing');
+  const doc = new DOMParser().parseFromString(text, 'text/html');
+  const folders = [];
+  for (const a of doc.querySelectorAll('a[href]')){
+    const href = a.getAttribute('href') || '';
+    if (href.startsWith('../') || href.startsWith('/') || href.includes('?') || !href.endsWith('/')) continue;
+    const name = decodeURIComponent(href.slice(0, -1));
+    if (parseDir(name)) folders.push(name);
+  }
+  if (!folders.length) return [];
+  const map = new Map();
+  await Promise.all(folders.map(async folder => {
+    try {
+      const r = await fetch(joinUrl(CONFIG.basePath, folder) + '/', { cache: 'no-cache' });
+      if (!r.ok) return;
+      const t = await r.text();
+      if (!t || !/<a\s+href/i.test(t)) return;
+      const d = new DOMParser().parseFromString(t, 'text/html');
+      const files = [];
+      for (const a of d.querySelectorAll('a[href]')){
+        const href = a.getAttribute('href') || '';
+        if (href.startsWith('../') || href.startsWith('/') || href.includes('?') || href.endsWith('/')) continue;
+        const name = decodeURIComponent(href);
+        if (isImage(name)) files.push(name);
+      }
+      files.sort((a,b) => (leadNum(a) - leadNum(b)) || a.localeCompare(b));
+      if (files.length) map.set(folder, { dir: folder, images: files });
+    } catch {}
+  }));
+  return normalize([...map.values()]);
+}
+
+async function loadViaGithubApi(){
+  const url = `https://api.github.com/repos/${CONFIG.repo}/git/trees/${CONFIG.branch}?recursive=1`;
+  const res = await fetch(url);
+  if (res.status === 403) throw new Error('rate-limited');
+  if (!res.ok) throw new Error('api ' + res.status);
+  const json = await res.json();
+  if (json.truncated) console.warn('[SpellSpun] tree truncated — some items may be missing. Generate a manifest.json for full reliability.');
+  const prefix = CONFIG.repoBasePath + '/';
+  const map = new Map();
+  for (const t of (json.tree || [])){
+    if (typeof t.path !== 'string' || !t.path.startsWith(prefix)) continue;
+    const rel = t.path.slice(prefix.length);
+    if (!rel || rel.includes('/.gitkeep')) continue;
+    const segs = rel.split('/');
+    if (segs.length === 1 && t.type === 'tree'){
+      if (!parseDir(segs[0])) continue;
+      if (!map.has(segs[0])) map.set(segs[0], { dir: segs[0], images: [] });
+    } else if (segs.length === 2 && t.type === 'blob'){
+      const folder = segs[0], file = segs[1];
+      if (!parseDir(folder) || !isImage(file)) continue;
+      if (!map.has(folder)) map.set(folder, { dir: folder, images: [] });
+      map.get(folder).images.push(file);
+    }
+  }
+  return normalize([...map.values()]);
+}
+
+function readCache(){
+  try {
+    const raw = localStorage.getItem(CONFIG.cacheKey);
+    if (!raw) return null;
+    const { t, data } = JSON.parse(raw);
+    if (Date.now() - t > CONFIG.cacheTTL) return null;
+    return data;
+  } catch { return null; }
+}
+function writeCache(data){
+  try { localStorage.setItem(CONFIG.cacheKey, JSON.stringify({ t: Date.now(), data })); } catch {}
+}
+
+function isLocalhost(){
+  const h = location.hostname;
+  return h === 'localhost' || h === '127.0.0.1' || h === '0.0.0.0' || h === '::1';
+}
+
+async function loadCollections(){
+  // 1) local dev: directory listing — sees uncommitted files instantly,
+  //    no manifest fetch (so no 404 spam on localhost). Skipped in production
+  //    (GitHub Pages has no autoindex; would just 404).
+  if (isLocalhost()){
+    try {
+      const cols = await loadViaDirectoryListing();
+      if (cols.length) return cols;
+    } catch (e){ /* fall through */ }
+  }
+  // 2) manifest — most reliable, works everywhere (production + local)
+  try { return await loadViaManifest(); }
+  catch (e){ /* fall through */ }
+  // 3) cached API result
+  const cached = readCache();
+  if (cached) return cached;
+  // 4) live GitHub API (auto-discovers folders you push)
+  return await loadViaGithubApi();
+}
+
+/* ---------- rendering ---------- */
+const collectionsEl = document.getElementById('collections');
+const stateEl = document.getElementById('state');
+const metaEl = document.getElementById('meta');
+const taglineEl = document.getElementById('tagline');
+let flat = [];   // flattened lightbox list: {src,title,pos,total}
+let lastData = null;
+
+function showState(kind, msg){
+  let html = '';
+  if (kind === 'loading'){
+    html = `<div class="spinner"></div><h3>Untangling the yarn…</h3><p>Loading the collection.</p>`;
+  } else if (kind === 'empty'){
+    html = `<h3>Nothing here yet</h3>
+      <p>No crochet folders were found. Add folders under <code>res/crochet/</code> and they'll show up here.</p>
+      <div class="hint">Folder naming: <code>res/crochet/1_star/</code><br>
+      Inside each folder, add photos named by order: <code>1.png</code>, <code>2.jpeg</code>, <code>3.webp</code> …<br>
+      Title = the text after the first <code>_</code> (so <code>1_star</code> → “Star”).<br><br>
+      To publish: push to GitHub (auto-detected) or run <code>node tools/gen-manifest.mjs</code> then commit <code>manifest.json</code>.</div>`;
+  } else if (kind === 'error'){
+    html = `<h3>Couldn't load the gallery</h3>
+      <p>${msg || 'Something went wrong.'}</p>
+      <div class="hint">If GitHub's API rate limit was hit, run <code>node tools/gen-manifest.mjs</code> locally and commit the generated <code>manifest.json</code> — the page will then load offline with no API calls.</div>`;
+  }
+  stateEl.className = 'state';
+  stateEl.innerHTML = html;
+}
+
+function render(collections){
+  lastData = collections;
+  flat = [];
+  if (!collections.length){ showState('empty'); metaEl.textContent = ''; return; }
+
+  const frag = document.createDocumentFragment();
+  let totalImgs = 0;
+  collections.forEach((col, ci) => {
+    if (!col.images.length) return;
+    totalImgs += col.images.length;
+
+    const section = document.createElement('section');
+    section.className = 'collection';
+    section.style.animationDelay = Math.min(ci * 0.05, 0.3) + 's';
+
+    const head = document.createElement('div');
+    head.className = 'col-head';
+    head.innerHTML = `<span class="num">${String(col.order).padStart(2,'0')}</span>
+      <h2>${escapeHtml(col.title)}</h2>
+      <span class="count">${col.images.length} photo${col.images.length>1?'s':''}</span>`;
+    section.appendChild(head);
+
+    const masonry = document.createElement('div');
+    masonry.className = 'masonry';
+
+    col.images.forEach((im, ii) => {
+      const flatPos = flat.length;
+      flat.push({ src: im.src, title: col.title, pos: flatPos, total: 0 });
+
+      const tile = document.createElement('figure');
+      tile.className = 'tile';
+      tile.setAttribute('role','button');
+      tile.setAttribute('tabindex','0');
+      tile.setAttribute('aria-label', `${col.title} — photo ${ii+1} of ${col.images.length}, open viewer`);
+
+      const img = document.createElement('img');
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.alt = `${col.title} — photo ${ii+1}`;
+      img.dataset.src = im.src;
+      img.addEventListener('load', () => { img.classList.add('loaded'); tile.classList.add('in'); });
+      img.addEventListener('error', () => { tile.classList.add('failed'); tile.classList.remove('in'); tile.removeAttribute('tabindex'); });
+
+      const hint = document.createElement('div');
+      hint.className = 'zoom-hint';
+      hint.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>`;
+
+      tile.appendChild(img);
+      tile.appendChild(hint);
+      tile.addEventListener('click', () => openLightbox(flatPos));
+      tile.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openLightbox(flatPos); } });
+
+      masonry.appendChild(tile);
+    });
+
+    section.appendChild(masonry);
+    frag.appendChild(section);
+  });
+
+  flat.forEach(f => f.total = flat.length);
+
+  collectionsEl.innerHTML = '';
+  collectionsEl.appendChild(frag);
+
+  const lc = collections.filter(c => c.images.length).length;
+  metaEl.innerHTML = totalImgs
+    ? `<b>${totalImgs}</b> photo${totalImgs>1?'s':''} across <b>${lc}</b> collection${lc>1?'s':''}`
+    : '';
+  if (CONFIG.artist) taglineEl.textContent = CONFIG.tagline + ' ' + CONFIG.artist;
+
+  observeTiles();
+}
+
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* lazy reveal + lazy load via IntersectionObserver */
+let io;
+function observeTiles(){
+  if (!('IntersectionObserver' in window)){
+    document.querySelectorAll('.tile img[data-src]').forEach(img => { img.src = img.dataset.src; });
+    return;
+  }
+  io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const tile = e.target;
+      const img = tile.querySelector('img[data-src]');
+      if (img && !img.src) img.src = img.dataset.src;
+      tile.classList.add('in');
+      io.unobserve(tile);
+    });
+  }, { rootMargin: '300px 0px', threshold: 0.01 });
+  document.querySelectorAll('.tile').forEach(t => io.observe(t));
+}
+
+/* ---------- lightbox ---------- */
+const lb = document.getElementById('lightbox');
+const lbImg = document.getElementById('lbImg');
+const lbCap = document.getElementById('lbCap');
+const lbClose = document.getElementById('lbClose');
+const lbPrev = document.getElementById('lbPrev');
+const lbNext = document.getElementById('lbNext');
+let lbIndex = 0;
+let lastFocused = null;
+
+function openLightbox(i){
+  if (!flat.length) return;
+  lastFocused = document.activeElement;
+  lbIndex = (i + flat.length) % flat.length;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  showLbImage();
+  lbClose.focus();
+}
+function closeLightbox(){
+  lb.classList.remove('open');
+  lbImg.classList.remove('show');
+  document.body.style.overflow = '';
+  if (lastFocused && lastFocused.focus) lastFocused.focus();
+}
+function showLbImage(){
+  const item = flat[lbIndex];
+  if (!item) return;
+  lbImg.classList.remove('show');
+  lbImg.alt = `${item.title} — photo`;
+  lbImg.src = item.src;
+  lbImg.onload = () => requestAnimationFrame(() => lbImg.classList.add('show'));
+  if (lbImg.complete) lbImg.classList.add('show');
+  lbCap.innerHTML = `<div class="ctitle">${escapeHtml(item.title)}</div>
+    <div class="cpos">${lbIndex+1} / ${item.total}</div>`;
+  // preload neighbours
+  if (flat[lbIndex+1]) new Image().src = flat[lbIndex+1].src;
+  if (flat[lbIndex-1]) new Image().src = flat[lbIndex-1].src;
+}
+function lbStep(d){ lbIndex = (lbIndex + d + flat.length) % flat.length; showLbImage(); }
+
+lbClose.addEventListener('click', closeLightbox);
+lbPrev.addEventListener('click', () => lbStep(-1));
+lbNext.addEventListener('click', () => lbStep(1));
+lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+
+document.addEventListener('keydown', e => {
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  else if (e.key === 'ArrowLeft') lbStep(-1);
+  else if (e.key === 'ArrowRight') lbStep(1);
+});
+
+/* touch swipe */
+let tStartX = 0, tStartY = 0, tSwiped = false;
+lb.addEventListener('touchstart', e => { const t = e.touches[0]; tStartX = t.clientX; tStartY = t.clientY; tSwiped = false; }, { passive: true });
+lb.addEventListener('touchmove', e => {
+  if (tSwiped) return;
+  const dx = e.touches[0].clientX - tStartX, dy = e.touches[0].clientY - tStartY;
+  if (Math.abs(dx) > 12 || Math.abs(dy) > 12) tSwiped = true;
+}, { passive: true });
+lb.addEventListener('touchend', e => {
+  const t = e.changedTouches[0];
+  const dx = t.clientX - tStartX, dy = t.clientY - tStartY;
+  if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) lbStep(dx > 0 ? -1 : 1);
+  else if (dy < -90 && Math.abs(dy) > Math.abs(dx)) closeLightbox();
+  else if (Math.abs(dx) < 10 && Math.abs(dy) < 10 && (e.target === lb || e.target === lbImg)) closeLightbox();
+});
+
+/* ---------- refresh ---------- */
+document.getElementById('refreshBtn').addEventListener('click', () => {
+  try { localStorage.removeItem(CONFIG.cacheKey); } catch {}
+  init();
+});
+
+/* ---------- init ---------- */
+async function init(){
+  showState('loading');
+  try {
+    const cols = await loadCollections();
+    render(cols);
+    if (cols.length) writeCache(cols);
+  } catch (e){
+    console.warn('[SpellSpun] load failed:', e.message);
+    const cached = readCache();
+    if (cached){ render(cached); }
+    else if (e.message === 'rate-limited') showState('error', 'GitHub’s API rate limit was reached. Try again in a little while, or generate a manifest.');
+    else showState('error', e.message);
+  }
+}
+init();
+</script>
+</body>
+</html>
